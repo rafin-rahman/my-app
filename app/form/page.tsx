@@ -49,6 +49,7 @@ export default function form() {
   } = useForm<Inputs>();
 
   const watchedDateOfBirth = watch("dateOfBirth");
+  const wantedRelationshipStatus = watch("relationshipStatus");
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     // Convert dateOfBirth to UK format before submitting
     if (data.dateOfBirth) {
@@ -61,6 +62,9 @@ export default function form() {
   // previousLoanSLC coordinates
   const no_previousLoanSLC = "332,722";
   const yes_previousLoanSLC = "286,722";
+  // Relationship Status coordinates
+  const marriageCivilPartnership = "285,143";
+
   // watch previousLoanSLC input
   const previousLoanSLC = watch("previousLoanSLC");
   const onError = (errors: FieldErrors<Inputs>) => console.error(errors);
@@ -69,7 +73,9 @@ export default function form() {
     <>
       {/* Form to collect personal information */}
       <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Form</h1>
+        <h1 className="text-2xl font-bold mb-4">
+          Online Student Finance Formz
+        </h1>
         <p className="mb-6">Fill out this form</p>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit, onError)}>
           {/* title select Mr, Mrs, Miss, Ms, Mx*/}
@@ -208,11 +214,114 @@ export default function form() {
                 {...register("behindWithRepayments")}
                 className="p-2 border rounded"
               >
-                <option value={"332,722"}>No</option>
-                <option value={"286,722"}>Yes</option>
+                <option value={"332,682"}>No</option>
+                <option value={"286,682"}>Yes</option>
               </select>
             </div>
           )}
+          {/* armed forces member */}
+          <div className="flex flex-col">
+            <p>{errors.armedForcesMember?.message}</p>
+            <label className="mb-1">
+              Are you a member of the Armed Forces?
+            </label>
+            <select
+              {...register("armedForcesMember")}
+              className="p-2 border rounded"
+            >
+              <option value={"332,617"}>No</option>
+              <option value={"286,617"}>Yes</option>
+            </select>
+          </div>
+
+          {/* family member of armed forces */}
+          <div className="flex flex-col">
+            <p>{errors.familyMemberArmedForces?.message}</p>
+            <label className="mb-1">
+              Are you a family member of a member of the Armed Forces?
+            </label>
+            <select
+              {...register("familyMemberArmedForces")}
+              className="p-2 border rounded"
+            >
+              <option value={"332,577"}>No</option>
+              <option value={"286,577"}>Yes</option>
+            </select>
+          </div>
+
+          {/* Address */}
+          <div className="flex flex-col">
+            <p>{errors.address?.message}</p>
+            <label className="mb-1">Full address</label>
+            <textarea {...register("address")} className="p-2 border rounded" />
+          </div>
+
+          {/* Postcode */}
+          <div className="flex flex-col">
+            <p>{errors.postcode?.message}</p>
+            <label className="mb-1">Postcode</label>
+            <input
+              {...register("postcode")}
+              type="text"
+              className="p-2 border rounded"
+            />
+          </div>
+
+          {/* Telephone Number */}
+          <div className="flex flex-col">
+            <p>{errors.telephoneNumber?.message}</p>
+            <label className="mb-1">Telephone Number</label>
+            <input
+              {...register("telephoneNumber")}
+              type="text"
+              className="p-2 border rounded"
+            />
+          </div>
+
+          {/* Email Address */}
+          <div className="flex flex-col">
+            <p>{errors.emailAddress?.message}</p>
+            <label className="mb-1">Email Address</label>
+            <input
+              {...register("emailAddress")}
+              type="text"
+              className="p-2 border rounded"
+            />
+          </div>
+
+          {/* Relationship Status */}
+          <div className="flex flex-col">
+            <p>{errors.relationshipStatus?.message}</p>
+            <label className="mb-1">Relationship Status</label>
+            <select
+              {...register("relationshipStatus")}
+              className="p-2 border rounded"
+            >
+              <option value={"285,223"}>Single</option>
+              <option value={"285,200"}>Living with a partner</option>
+              <option value={marriageCivilPartnership}>
+                Married/civil partnership
+              </option>
+              <option value={"285,84"}>Separated</option>
+              <option value={"285,63"}>Divorced</option>
+              <option value={"285,43"}>Widowed</option>
+            </select>
+          </div>
+
+          {/* If relationship status is married/civil, marriage Date */}
+          {wantedRelationshipStatus === marriageCivilPartnership && (
+            <div className="flex flex-col">
+              <p>{errors.marriageDate?.message}</p>
+              <label className="mb-1">Marriage Date</label>
+              <input
+                {...register("marriageDate")}
+                type="date"
+                className="p-2 border rounded"
+              />
+            </div>
+          )}
+
+          {/* Are you a UK national? */}
 
           {/* Submit input with an on click and on hover animation*/}
           <input

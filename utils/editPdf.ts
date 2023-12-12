@@ -9,6 +9,7 @@ export async function editPdf(formData: any) {
     });
 
     const data = await response.json();
+    console.log(data.message);
   } catch (error) {
     console.log("Error modifying PDF", error);
   }
