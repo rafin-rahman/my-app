@@ -3,7 +3,7 @@ import Link from "next/link";
 const Navbar = () => {
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
-      <div className="font-bold">OFORM.IO</div>
+      <div className="font-bold">OFORM.IO.</div>
       <div>
         <Link
           href="/login"
