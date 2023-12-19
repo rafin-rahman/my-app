@@ -16,6 +16,10 @@ export async function POST(request: Request) {
   const pages = pdfDoc.getPages();
   const page3 = pages[3];
   const page4 = pages[4];
+  const page5 = pages[5];
+  const page6 = pages[6];
+  const page7 = pages[7];
+  const page8 = pages[8];
 
   // tittle
   const [xTitle, yTitle] = formData.title.split(",");
@@ -89,7 +93,7 @@ export async function POST(request: Request) {
   });
 
   // behind with repayments
-  if (formData.behindWithRepayments) {
+  if (formData.behindWithRepayments && formData.previousLoanSLC === "285,143") {
     const [xBehindWithRepayments, yBehindWithRepayments] =
       formData.behindWithRepayments.split(",");
     page4.drawText("V", {
@@ -153,12 +157,14 @@ export async function POST(request: Request) {
   });
 
   // marriage date
-  if (formData.marriageDate) {
-    let xOffsetMarriageDate = 190; // starting x position
+  // 285,143 is the value for "Married"
+  if (formData.marriageDate && formData.relationshipStatus === "285,143") {
+    console.log("marriage date is working", formData.marriageDate);
+    let xOffsetMarriageDate = 315; // starting x position
     for (const char of formData.marriageDate) {
       page4.drawText(char, {
         x: xOffsetMarriageDate,
-        y: 193,
+        y: 105,
         size: 12,
         font: font,
       });
@@ -167,6 +173,83 @@ export async function POST(request: Request) {
     }
   }
 
+  // uk national
+  const [xUkNational, yUkNational] = formData.ukNational.split(",");
+  page5.drawText("V", {
+    x: parseInt(xUkNational),
+    y: parseInt(yUkNational),
+    size: 12,
+  });
+
+  // irish citizen
+  const [xIrishCitizen, yIrishCitizen] = formData.irishCitizen.split(",");
+  page5.drawText("V", {
+    x: parseInt(xIrishCitizen),
+    y: parseInt(yIrishCitizen),
+    size: 12,
+  });
+
+  // uk resident 3 years before first day of studies
+  if (formData.irishCitizen === "288,435") {
+    const [
+      xUkResident3YearsBeforeFirstDayOfStudies,
+      yUkResident3YearsBeforeFirstDayOfStudies,
+    ] = formData.ukResident3YearsBeforeFirstDayOfStudies.split(",");
+    page5.drawText("V", {
+      x: parseInt(xUkResident3YearsBeforeFirstDayOfStudies),
+      y: parseInt(yUkResident3YearsBeforeFirstDayOfStudies),
+      size: 12,
+    });
+  }
+
+  // family member uk living 3 years
+  const [xFamilyMemberUkLiving3years, yFamilyMemberUkLiving3years] =
+    formData.familyMemberUkLiving3years.split(",");
+  page6.drawText("V", {
+    x: parseInt(xFamilyMemberUkLiving3years),
+    y: parseInt(yFamilyMemberUkLiving3years),
+    size: 12,
+  });
+
+  // both uk resident 3 years before first day of studies
+  if (formData.familyMemberUkLiving3years === "289,713") {
+    const [
+      xBothUkResident3YearsBeforeFirstDayOfStudies,
+      yBothUkResident3YearsBeforeFirstDayOfStudies,
+    ] = formData.bothUkResident3YearsBeforeFirstDayOfStudies.split(",");
+    page6.drawText("V", {
+      x: parseInt(xBothUkResident3YearsBeforeFirstDayOfStudies),
+      y: parseInt(yBothUkResident3YearsBeforeFirstDayOfStudies),
+      size: 12,
+    });
+  }
+  // residency status
+  const [xResidencyStatus, yResidencyStatus] =
+    formData.residencyStatus.split(",");
+  page6.drawText("V", {
+    x: parseInt(xResidencyStatus),
+    y: parseInt(yResidencyStatus),
+    size: 12,
+  });
+
+  // settled status share code
+  if (formData.residencyStatus === "290,455") {
+    let xOffsetSettledStatusShareCode = 350; // starting x position
+    for (const char of formData.settledStatusShareCode) {
+      page6.drawText(char, {
+        x: xOffsetSettledStatusShareCode,
+        y: 412,
+        size: 12,
+        font: font,
+      });
+      const widthOfChar = font.widthOfTextAtSize(char, 12);
+      xOffsetSettledStatusShareCode += widthOfChar + 12; // move to the next character position
+    }
+  }
+
+  //
+  //
+  // end of form inputs
   const finalPdfContent = await pdfDoc.save();
   const documentName = "customised.pdf";
   const outputFilePath = path.join(
