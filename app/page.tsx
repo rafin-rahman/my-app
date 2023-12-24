@@ -3,7 +3,24 @@ import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import Content1 from "@/components/Content1";
 import Footer from "@/components/Footer";
-
+import { prisma } from "@/lib/prisma";
+import GoogleComponent from "@/components/GoogleButton";
+async function getPosts() {
+  const posts = await prisma.posts.findMany({
+    include: {
+      author: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return posts.map((post) => (
+    <div key={post.id} className="p-4 bg-white shadow rounded-lg my-2">
+      <h2 className="text-2xl text-gray-700">{post.title}</h2>
+      <p className="text-gray-500">{post.author?.name}</p>
+    </div>
+  ));
+}
 export default function Home() {
   return (
     <>
@@ -16,6 +33,8 @@ export default function Home() {
         }
         imageUrl={"/illustrations/pdf illustration.png"}
       />
+      <GoogleComponent />
+      {getPosts()}
       <Footer />
     </>
   );
