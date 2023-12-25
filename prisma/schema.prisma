@@ -48,8 +48,11 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   posts          Posts[]
+  isActive       Boolean   @default(true)
+  role           String[]  @default(["user"])
 
-  accounts Account[]
+  accounts    Account[]
+  permissions String[]
 }
 
 model VerificationToken {

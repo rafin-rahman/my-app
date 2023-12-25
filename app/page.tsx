@@ -4,7 +4,10 @@ import Hero from "@/components/Hero";
 import Content1 from "@/components/Content1";
 import Footer from "@/components/Footer";
 import { prisma } from "@/lib/prisma";
-import GoogleComponent from "@/components/GoogleButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import UserSessionInfo from "@/components/UserSessionInfo";
+
 async function getPosts() {
   const posts = await prisma.posts.findMany({
     include: {
@@ -14,6 +17,7 @@ async function getPosts() {
       createdAt: "desc",
     },
   });
+
   return posts.map((post) => (
     <div key={post.id} className="p-4 bg-white shadow rounded-lg my-2">
       <h2 className="text-2xl text-gray-700">{post.title}</h2>
@@ -21,9 +25,16 @@ async function getPosts() {
     </div>
   ));
 }
-export default function Home() {
+export default async function Home() {
+  const serverSession = await getServerSession(authOptions);
   return (
     <>
+      <h1>Server side rendered</h1>
+      <pre>{JSON.stringify(serverSession)}</pre>
+      <h1>Client side rendered</h1>
+      <UserSessionInfo />
+      <h1>Checking :</h1>
+
       <NavBar />
       <Hero />
       <Content1
@@ -33,7 +44,6 @@ export default function Home() {
         }
         imageUrl={"/illustrations/pdf illustration.png"}
       />
-      <GoogleComponent />
       {getPosts()}
       <Footer />
     </>

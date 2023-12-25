@@ -4,7 +4,6 @@ import { useState } from "react";
 export default function () {
   const [label, setLabel] = useState("Nothing yet");
   async function btnHandler() {
-    console.log("btnHandler clicked");
     try {
       const response = await fetch("/api/modifyPdf", {
         method: "POST",

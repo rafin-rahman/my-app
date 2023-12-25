@@ -6,7 +6,7 @@ import path from "path";
 export async function POST(request: Request) {
   // @ts-ignore
   const formData = await request.json();
-  console.log("formData is working", formData.dateOfBirth);
+
   const filePath = path.join(process.cwd(), "public", "pn1", "2023-24test.pdf");
   const pn1_2023_24 = fs.readFileSync(filePath);
 
@@ -159,7 +159,6 @@ export async function POST(request: Request) {
   // marriage date
   // 285,143 is the value for "Married"
   if (formData.marriageDate && formData.relationshipStatus === "285,143") {
-    console.log("marriage date is working", formData.marriageDate);
     let xOffsetMarriageDate = 315; // starting x position
     for (const char of formData.marriageDate) {
       page4.drawText(char, {
