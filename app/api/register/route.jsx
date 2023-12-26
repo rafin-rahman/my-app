@@ -17,10 +17,6 @@ export async function POST(request) {
     return new NextResponse("User already exists ", { status: 409 });
   }
 
-  const userRole = await prisma.role.findUnique({
-    where: { name: "user" },
-  });
-
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
@@ -28,7 +24,6 @@ export async function POST(request) {
       name,
       email,
       hashedPassword,
-      role: { connect: { id: userRole.id } },
     },
   });
 

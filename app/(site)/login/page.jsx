@@ -8,26 +8,43 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const session = useSession();
   const router = useRouter();
-  const [data, setData] = useState({ email: "", password: "" });
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
-    if (session?.status === "authenticated") {
-      router.push("/");
-    }
+    // if (session?.status === "authenticated") {
+    //   router.push("/");
+    // }
+    // if (session?.status === "authenticated") {
+    //   const urlParams = new URLSearchParams(window.location.search);
+    //   const callbackUrl = urlParams.get("callbackUrl");
+    //
+    //   router.push(callbackUrl || "/");
+    // }
   });
   const loginUser = async (e) => {
     e.preventDefault();
-    signIn("credentials", {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const callbackUrl = urlParams.get("callbackUrl");
+    console.log("callbackUrl", callbackUrl);
+
+    await signIn("credentials", {
       ...data,
+      // callbackUrl: callbackUrl,
       // redirect: false = won't redirect the user to a pre-build page from NextAuth
       redirect: false,
     }).then((callback) => {
       if (callback?.error) {
         toast.error(callback.error);
       }
-
       if (callback?.ok && !callback?.error) {
         toast.success("Logged in successfully");
+        if (callbackUrl) {
+          router.push(callbackUrl);
+        }
       }
     });
   };

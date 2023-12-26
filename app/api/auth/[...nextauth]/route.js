@@ -11,22 +11,11 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       profile: async (profile) => {
-        // Fetch the ADMIN role ID from the database
-        const role = await prisma.role.findUnique({
-          where: { name: "user" },
-        });
-        console.log("Loggin role" + role.name);
-        if (!role) throw new Error("Role not found");
-
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          // Link the role ID to the user
-          role: {
-            connect: { id: role?.id },
-          },
         };
       },
     }),
@@ -76,9 +65,13 @@ export const authOptions = {
   adapter: PrismaAdapter(prisma),
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log("JWT Callback", { token, user, trigger, session });
+      // pass user ID and user role into token
       if (user) {
-        token.role = user.role;
+        return {
+          ...token,
+          id: user.id,
+          role: "user",
+        };
       }
       if (trigger === "update" && session?.name) {
         token.name = session.name;
@@ -86,17 +79,44 @@ export const authOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      console.log("Session Callback", { session, token, user });
-      session.user.role = token.role;
-      return session;
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          role: token.role,
+          name: token.name,
+        },
+      };
+    },
+    async redirect({ url, baseUrl }) {
+      console.log("[...nextauth] callbacks -> redirect: ", url);
+      try {
+        if (url === null) {
+          console.log("Redirecting to baseUrl: ", baseUrl);
+          return baseUrl;
+        } else {
+          console.log("Redirecting to: url: ", url);
+          return url;
+        }
+      } catch (error) {
+        console.log("Error in redirect callback");
+        console.log(error);
+      }
     },
   },
-
-  secret: process.env.SECRET,
+  pages: {
+    signIn: "/login",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 10 * 60, // 10 minutes
   },
-  // debug: process.env.NODE_ENV === "development",
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+  },
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);

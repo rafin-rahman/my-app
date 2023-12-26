@@ -1,41 +1,61 @@
-import Image from "next/image";
-import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import Content1 from "@/components/Content1";
-import Footer from "@/components/Footer";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import UserSessionInfo from "@/components/UserSessionInfo";
+import Link from "next/link";
 
 async function getPosts() {
-  const posts = await prisma.posts.findMany({
-    include: {
-      author: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  try {
+    const posts = await prisma.posts.findMany({
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-  return posts.map((post) => (
-    <div key={post.id} className="p-4 bg-white shadow rounded-lg my-2">
-      <h2 className="text-2xl text-gray-700">{post.title}</h2>
-      <p className="text-gray-500">{post.author?.name}</p>
-    </div>
-  ));
+    if (posts.length === 0 || !posts)
+      return (
+        <div className="p-4 bg-white shadow rounded-lg my-2 text-center">
+          <h2 className="text-2xl text-gray-700">OPS, no posts found</h2>
+        </div>
+      );
+
+    return posts.map((post) => (
+      <div
+        key={post.id}
+        className="p-4 bg-white shadow rounded-lg my-2 text-center"
+      >
+        <h2 className="text-2xl text-gray-700">{post.title}</h2>
+        <p className="text-gray-500">{post.author?.name}</p>
+      </div>
+    ));
+  } catch (error) {
+    console.log(error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 export default async function Home() {
   const serverSession = await getServerSession(authOptions);
   return (
     <>
-      <h1>Server side rendered</h1>
-      <pre>{JSON.stringify(serverSession)}</pre>
-      <h1>Client side rendered</h1>
-      <UserSessionInfo />
-      <h1>Checking :</h1>
+      <Link href={"/protected"}>Protected</Link>
+      <h1 className=" text-center mt-20 text-2xl font-bold text-gray-800">
+        Server-side session
+      </h1>
+      <pre className="p-4 bg-gray-100 rounded-md overflow-x-auto ">
+        {JSON.stringify(serverSession, null, 2)}
+      </pre>
 
-      <NavBar />
+      <h1 className="text-center  text-2xl font-bold text-gray-800">
+        Client-side session
+      </h1>
+      <UserSessionInfo />
+
       <Hero />
       <Content1
         title={"What is OFORM.IO?"}
@@ -44,8 +64,8 @@ export default async function Home() {
         }
         imageUrl={"/illustrations/pdf illustration.png"}
       />
+
       {getPosts()}
-      <Footer />
     </>
   );
 }
