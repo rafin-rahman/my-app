@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import GoogleButton from "@/components/GoogleButton";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const session = useSession();
@@ -13,15 +13,13 @@ export default function Login() {
     email: "",
     password: "",
   });
-  console.log("callbackUrl at loading", callbackUrl);
-  // const searchParams = useSearchParams();
-  // const callbackUrl = searchParams.get("callbackUrl") || "/";
-  // const callbackUrl = "http://localhost:3000/protected";
 
   useEffect(() => {
     // Extract the callbackUrl from the URL's query parameter
     const urlParams = new URLSearchParams(window.location.search);
+    // Get the callbackUrl
     const path = urlParams.get("callbackUrl");
+    // If there is a callbackUrl, set it in the state
     if (path) {
       // Construct the full URL
       const fullUrl = window.location.origin + path;
@@ -29,6 +27,7 @@ export default function Login() {
     }
   }, []);
 
+  // Redirect the user to the callbackUrl if he is already logged in
   useEffect(() => {
     if (session?.status === "authenticated") {
       router.push(callbackUrl);
@@ -40,7 +39,6 @@ export default function Login() {
 
     const signInResponse = await signIn("credentials", {
       ...data,
-      // callbackUrl: callbackUrl,
       // redirect: false = won't redirect the user to a pre-build page from NextAuth
       redirect: false,
     });
@@ -49,13 +47,12 @@ export default function Login() {
     } else {
       toast.success("Logged in successfully");
       if (callbackUrl !== "/") {
-        console.log("callbackUrl after successfull login: ", callbackUrl);
-        // keep only the pathname from callbackUrl
+        // keep only the pathname from callbackUrl e.g. /protected instead of http://localhost:3000/protected
         const callbackUrlPathName = new URL(callbackUrl).pathname;
-        console.log("callbackUrlPathName", callbackUrlPathName);
+        // redirect the user to the callbackUrl
         router.push(callbackUrlPathName);
-        // router.push("/protected");
       } else {
+        // redirect the user to the homepage
         router.push("/");
       }
     }
