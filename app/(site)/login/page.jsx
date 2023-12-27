@@ -21,7 +21,7 @@ export default function Login() {
     const path = urlParams.get("callbackUrl");
     // If there is a callbackUrl, set it in the state
     if (path) {
-      // Construct the full URL
+      // Construct the full URL e.g. http://localhost:3000/protected instead of just "/protected"
       const fullUrl = window.location.origin + path;
       setCallbackUrl(fullUrl);
     }
@@ -102,14 +102,6 @@ export default function Login() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -134,6 +126,23 @@ export default function Login() {
               >
                 Login
               </button>
+            </div>
+            <div className="text-sm">
+              <a
+                href="#"
+                className="font-semibold text-gray-600 hover:text-gray-500"
+              >
+                Forgot password?
+              </a>
+            </div>
+            {/* register link */}
+            <div className="text-sm">
+              <a
+                href="/register"
+                className="font-semibold text-gray-600 hover:text-gray-500"
+              >
+                Don't have an account? Register here
+              </a>
             </div>
           </form>
         </div>

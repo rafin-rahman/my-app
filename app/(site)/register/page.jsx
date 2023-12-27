@@ -100,14 +100,6 @@ export default function Register() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -132,6 +124,23 @@ export default function Register() {
               >
                 Register
               </button>
+            </div>
+            <div className="text-sm">
+              <a
+                href="#"
+                className="font-semibold text-gray-600 hover:text-gray-500"
+              >
+                Forgot password?
+              </a>
+            </div>
+            {/*  Link to login page */}
+            <div className="text-sm">
+              <a
+                href="/login"
+                className="font-semibold text-gray-600 hover:text-gray-500"
+              >
+                Already have an account?
+              </a>
             </div>
           </form>
         </div>

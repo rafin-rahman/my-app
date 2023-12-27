@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import UserSessionInfo from "@/components/UserSessionInfo";
-import Link from "next/link";
 
 async function getPosts() {
   try {
@@ -43,18 +42,18 @@ export default async function Home() {
   const serverSession = await getServerSession(authOptions);
   return (
     <>
-      <a href={"/protected"}>Protected</a>
-      <h1 className=" text-center mt-20 text-2xl font-bold text-gray-800">
-        Server-side session
-      </h1>
-      <pre className="p-4 bg-gray-100 rounded-md overflow-x-auto ">
-        {JSON.stringify(serverSession, null, 2)}
-      </pre>
+      {/*<a href={"/protected"}>Protected</a>*/}
+      {/*<h1 className=" text-center mt-20 text-2xl font-bold text-gray-800">*/}
+      {/*  Server-side session*/}
+      {/*</h1>*/}
+      {/*<pre className="p-4 bg-gray-100 rounded-md overflow-x-auto ">*/}
+      {/*  {JSON.stringify(serverSession, null, 2)}*/}
+      {/*</pre>*/}
 
-      <h1 className="text-center  text-2xl font-bold text-gray-800">
-        Client-side session
-      </h1>
-      <UserSessionInfo />
+      {/*<h1 className="text-center  text-2xl font-bold text-gray-800">*/}
+      {/*  Client-side session*/}
+      {/*</h1>*/}
+      {/*<UserSessionInfo />*/}
 
       <Hero />
       <Content1
@@ -78,8 +77,6 @@ export default async function Home() {
         }
         imageUrl={"/illustrations/computer_illustration_UI.webp"}
       />
-
-      {getPosts()}
     </>
   );
 }

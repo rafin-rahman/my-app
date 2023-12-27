@@ -6,30 +6,54 @@ import { usePathname } from "next/navigation";
 const Navbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const menuList = [
+    {
+      name: "About",
+      path: "/about",
+      loginRequired: false,
+    },
+    {
+      name: "Admin",
+      path: "/authorised/admin",
+      loginRequired: true,
+    },
+    {
+      name: "Manager",
+      path: "/authorised/manager",
+      loginRequired: true,
+    },
+    {
+      name: "Super Admin",
+      path: "/authorised/superadmin",
+      loginRequired: true,
+    },
+  ];
+
   return (
-    <nav className="flex justify-around items-center p-4 bg-gray-800 text-white">
+    <nav className="flex flex-col sm:flex-row justify-around items-center p-4 bg-gray-800 text-white">
       <Link href={"/"}>
-        <div className="font-bold">NextJS</div>
+        <div className="font-bold mb-2 sm:mb-0">NextJS</div>
       </Link>
 
-      <div>
-        <Link
-          href="/dashboard"
-          className={"hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"}
-        >
-          Dashboard
-        </Link>
-      </div>
-      <div>
-        <Link
-          href="/register"
-          className={"hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"}
-        >
-          Register
-        </Link>
-      </div>
+      {menuList.map((item) => {
+        if (!item.loginRequired || (item.loginRequired && session)) {
+          return (
+            <a
+              href={item.path}
+              key={item.name}
+              className={`${
+                pathname === item.path
+                  ? "text-orange-400 underline underline-offset-4 "
+                  : ""
+              } hover:bg-orange-500 hover:text-white font-bold py-2 px-4 rounded mt-1 sm:mt-0`}
+            >
+              {item.name}
+            </a>
+          );
+        }
+      })}
 
-      <div>
+      <div className="mt-2 sm:mt-0">
         {!session ? (
           <Link
             href="/login"
@@ -42,13 +66,13 @@ const Navbar = () => {
         ) : (
           <div
             className={
-              "bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded"
+              "bg-gray-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded"
             }
           >
             <button
               onClick={() => signOut({ callbackUrl: "http://localhost:3000/" })}
             >
-              Sign out
+              Sign out - {session?.user?.name}
             </button>
           </div>
         )}
