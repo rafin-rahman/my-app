@@ -4,11 +4,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LoadingButton from "../../../components/UI/loadingButton";
 
 export default function Register() {
   const session = useSession();
   const router = useRouter();
   const [data, setData] = useState({ name: "", email: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (session?.status === "authenticated") {
@@ -18,6 +20,7 @@ export default function Register() {
 
   const registerUser = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios
         .post("/api/register", data)
@@ -27,12 +30,15 @@ export default function Register() {
       if (err.response) {
         // The server responded with a non 2xx status code
         toast.error(err.response.data); // or another appropriate property
+        setLoading(false);
       } else if (err.request) {
         // The request was made but no response was received
         toast.error("No response received from server");
+        setLoading(false);
       } else {
         // Something happened in setting up the request that triggered an error
         toast.error(err.message);
+        setLoading(false);
       }
     }
   };
@@ -42,8 +48,8 @@ export default function Register() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
+            src="/logos/logo_light.svg"
+            alt="Logo"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Register for an account
@@ -118,12 +124,16 @@ export default function Register() {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Register
-              </button>
+              {loading ? (
+                <LoadingButton loading={"loading..."} />
+              ) : (
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Register
+                </button>
+              )}
             </div>
             <div className="text-sm">
               <a

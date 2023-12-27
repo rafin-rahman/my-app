@@ -32,7 +32,12 @@ const Navbar = () => {
   return (
     <nav className="flex flex-col sm:flex-row justify-around items-center p-4 bg-gray-800 text-white">
       <Link href={"/"}>
-        <div className="font-bold mb-2 sm:mb-0">NextJS</div>
+        <div className="font-bold mb-2 sm:mb-0">MyApp</div>
+        <img
+          className="mx-auto h-6 w-auto"
+          src="/logos/logo_dark.svg"
+          alt="Logo"
+        />
       </Link>
 
       {menuList.map((item) => {
