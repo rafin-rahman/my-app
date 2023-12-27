@@ -6,6 +6,7 @@ export default function Dashboard() {
   console.log("useSession Hook session object", session);
   console.log("useSession Hook session status", status);
   // console.log("useSession Hook session update", update);
+
   return (
     <>
       {/*  Dashboard page with user information from session and modern styling from tailwind*/}
@@ -19,6 +20,7 @@ export default function Dashboard() {
               ? `and you are logged in as ${session?.user?.email}`
               : "and you are not logged in"}
           </p>
+
           <button
             className="p-3 m-10 text-white bg-gray-500 rounded-md hover:bg-gray-700"
             onClick={() => {

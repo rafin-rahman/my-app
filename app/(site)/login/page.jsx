@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import GoogleButton from "@/components/GoogleButton";
 import { useRouter } from "next/navigation";
+import LoadingButton from "../../../components/UI/loadingButton";
 
 export default function Login() {
   const session = useSession();
@@ -13,6 +14,7 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Extract the callbackUrl from the URL's query parameter
@@ -36,7 +38,7 @@ export default function Login() {
 
   const loginUser = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const signInResponse = await signIn("credentials", {
       ...data,
       // redirect: false = won't redirect the user to a pre-build page from NextAuth
@@ -44,6 +46,7 @@ export default function Login() {
     });
     if (signInResponse?.error) {
       toast.error(signInResponse.error);
+      setLoading(false);
     } else {
       toast.success("Logged in successfully");
       if (callbackUrl !== "/") {
@@ -120,12 +123,16 @@ export default function Login() {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Login
-              </button>
+              {loading ? (
+                <LoadingButton loadingText="Login" />
+              ) : (
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Login
+                </button>
+              )}
             </div>
             <div className="text-sm">
               <a

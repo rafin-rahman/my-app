@@ -69,9 +69,7 @@ const Navbar = () => {
               "bg-gray-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded"
             }
           >
-            <button
-              onClick={() => signOut({ callbackUrl: "http://localhost:3000/" })}
-            >
+            <button onClick={() => signOut()}>
               Sign out - {session?.user?.name}
             </button>
           </div>
