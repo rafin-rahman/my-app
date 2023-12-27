@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="flex justify-around items-center p-4 bg-gray-800 text-white">
       <Link href={"/"}>
-        <div className="font-bold">OFORM.IO.</div>
+        <div className="font-bold">NextJS</div>
       </Link>
 
       <div>

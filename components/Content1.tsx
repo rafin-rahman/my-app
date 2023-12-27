@@ -8,7 +8,7 @@ const ContentSection = ({ title, content, imageUrl }: ContentSectionProps) => {
               <img
                 src={imageUrl}
                 alt={title}
-                className="w-full md:w-48 lg:w-64 rounded-lg shadow-lg"
+                className="w-full md:w-48 lg:w-64 rounded-lg "
               />
             </div>
           )}

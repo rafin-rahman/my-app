@@ -1,38 +1,25 @@
-// import { withAuth } from "next-auth/middleware";
-// import { NextResponse } from "next/server";
-//
-// export default withAuth(
-//   function middleware(req) {
-//     console.log("Middleware my log");
-//     console.log(req.nextauth);
-//     if (
-//       req.nextUrl.pathname === "/dashboard" &&
-//       req.nextauth.token?.role !== "user"
-//     ) {
-//       return NextResponse.redirect("/login");
-//     }
-//   },
-//   {
-//     callbacks: {
-//       authorized({ req, token }) {
-//         if (token) return true; // If there is a token, the user is authenticated
-//       },
-//     },
-//   }
-// );
-//
-// export const config = { matcher: ["/dashboard"] };
-
-// export { default } from "next-auth/middleware";
-// export const config = { matcher: ["/dashboard"] };
-
 import { withAuth } from "next-auth/middleware";
+import { NextRequest, NextResponse } from "next/server";
 
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(req) {
-    console.log("Loggin middleware.js");
-    console.log(req.nextauth.token);
+    console.log("token: ", req.nextauth.token);
+
+    if (
+      req.nextUrl.pathname.startsWith("/admin") &&
+      req.nextauth.token?.role !== "admin"
+    )
+      return NextResponse.rewrite(
+        new URL("/auth/login?message=You Are Not Authorized!", req.url)
+      );
+    if (
+      req.nextUrl.pathname.startsWith("/user") &&
+      req.nextauth.token?.role !== "user"
+    )
+      return NextResponse.rewrite(
+        new URL("/auth/login?message=You Are Not Authorized!", req.url)
+      );
   },
   {
     callbacks: {

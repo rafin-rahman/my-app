@@ -43,7 +43,7 @@ export default async function Home() {
   const serverSession = await getServerSession(authOptions);
   return (
     <>
-      <Link href={"/protected"}>Protected</Link>
+      <a href={"/protected"}>Protected</a>
       <h1 className=" text-center mt-20 text-2xl font-bold text-gray-800">
         Server-side session
       </h1>
@@ -58,11 +58,25 @@ export default async function Home() {
 
       <Hero />
       <Content1
-        title={"What is OFORM.IO?"}
+        title={"Embracing Modernity"}
         content={
-          'Discover the future of form management with OFORM.IO – where convenience meets innovation. Bid farewell to the cumbersome world of paper forms and embrace the simplicity and efficiency of digital. OFORM.IO transforms your paperwork into smart, editable, and easily shareable online forms in just a few clicks. Our platform not only saves time and space but also significantly reduces errors and enhances data security. Ideal for businesses and individuals alike, OFORM.IO is your gateway to a streamlined, paper-free process. Experience the ease of managing forms digitally and elevate your productivity to new heights with OFORM.IO!"'
+          "Introducing a dynamic, full-featured Next.js template website that encapsulates the pinnacle of modern web application development. Leveraging the power of Next.js v14, this application confirms to the updated Next.js architecture with the App directory structured for scaled growth and effective route management. It seamlessly integrates essential security features like authentication and RBAC (Role-Based Access Control) to manage secure access to protected routes, ensuring that your user's data is impeccably safeguarded."
         }
-        imageUrl={"/illustrations/pdf illustration.png"}
+        imageUrl={"/illustrations/computer_illustration.webp"}
+      />
+      <Content1
+        title={"Powering Robust Applications"}
+        content={
+          "Built as a full-stack solution, this application is powered by TypeScript to provide a robust typing system, increasing the reliability and maintainability of your codebase. It utilizes Prisma, an innovative open source database toolkit to serve as an ORM (Object-Relational Mapping) for your PostgreSQL database, providing you with a strongly typed, database-agnostic way to communicate with your database."
+        }
+        imageUrl={"/illustrations/computer_illustration_power.webp"}
+      />
+      <Content1
+        title={"Ensuring Seamless User Experience"}
+        content={
+          "Authentication workflows are handled by NextAuth, a comprehensive library that provides session management, OAuth integration, and more, making user management a breeze. Lastly, the application employs Tailwind CSS, a utility-first CSS framework that allows for deep customization and clean, modern user interfaces. This potent combination of powerful technologies and thoughtful architecture makes this Next.js template website an excellent choice for developers looking to build scalable, secure, and visually appealing web applications."
+        }
+        imageUrl={"/illustrations/computer_illustration_UI.webp"}
       />
 
       {getPosts()}

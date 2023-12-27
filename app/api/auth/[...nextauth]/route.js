@@ -90,19 +90,7 @@ export const authOptions = {
       };
     },
     async redirect({ url, baseUrl }) {
-      console.log("[...nextauth] callbacks -> redirect: ", url);
-      try {
-        if (url === null) {
-          console.log("Redirecting to baseUrl: ", baseUrl);
-          return baseUrl;
-        } else {
-          console.log("Redirecting to: url: ", url);
-          return url;
-        }
-      } catch (error) {
-        console.log("Error in redirect callback");
-        console.log(error);
-      }
+      return url ? url : baseUrl;
     },
   },
   pages: {
