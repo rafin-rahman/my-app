@@ -1,3 +1,9 @@
+type ContentSectionProps = {
+  title: string;
+  content: string;
+  imageUrl?: string;
+};
+
 const ContentSection = ({ title, content, imageUrl }: ContentSectionProps) => {
   return (
     <div className="bg-white text-gray-800 p-6 md:p-10 lg:p-12">

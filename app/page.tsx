@@ -2,7 +2,7 @@ import Hero from "@/components/Hero";
 import Content1 from "@/components/Content1";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import UserSessionInfo from "@/components/UserSessionInfo";
 
 async function getPosts() {
@@ -39,22 +39,8 @@ async function getPosts() {
   }
 }
 export default async function Home() {
-  const serverSession = await getServerSession(authOptions);
   return (
     <>
-      {/*<a href={"/protected"}>Protected</a>*/}
-      {/*<h1 className=" text-center mt-20 text-2xl font-bold text-gray-800">*/}
-      {/*  Server-side session*/}
-      {/*</h1>*/}
-      {/*<pre className="p-4 bg-gray-100 rounded-md overflow-x-auto ">*/}
-      {/*  {JSON.stringify(serverSession, null, 2)}*/}
-      {/*</pre>*/}
-
-      {/*<h1 className="text-center  text-2xl font-bold text-gray-800">*/}
-      {/*  Client-side session*/}
-      {/*</h1>*/}
-      {/*<UserSessionInfo />*/}
-
       <Hero />
       <Content1
         title={"Embracing Modernity"}

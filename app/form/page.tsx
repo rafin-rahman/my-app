@@ -201,21 +201,25 @@ export default function form() {
             </select>
           </div>
           {/* if previous SLC loan is yes, then behind with repayments? */}
-          {watchedPreviousLoanSLC === yes_previousLoanSLC && (
-            <div className="flex flex-col">
-              <p>{errors.behindWithRepayments?.message}</p>
-              <label className="mb-1">
-                Are you currently behind with repayments?
-              </label>
-              <select
-                {...register("behindWithRepayments")}
-                className="p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
-              >
-                <option value={"332,682"}>No</option>
-                <option value={"286,682"}>Yes</option>
-              </select>
-            </div>
-          )}
+
+          {
+            // @ts-ignore
+            watchedPreviousLoanSLC === yes_previousLoanSLC && (
+              <div className="flex flex-col">
+                <p>{errors.behindWithRepayments?.message}</p>
+                <label className="mb-1">
+                  Are you currently behind with repayments?
+                </label>
+                <select
+                  {...register("behindWithRepayments")}
+                  className="p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+                >
+                  <option value={"332,682"}>No</option>
+                  <option value={"286,682"}>Yes</option>
+                </select>
+              </div>
+            )
+          }
           {/* armed forces member */}
           <div className="flex flex-col">
             <p>{errors.armedForcesMember?.message}</p>
@@ -338,21 +342,24 @@ export default function form() {
             </select>
           </div>
           {/* If irishCitizen is yes, are you UK resident 3 years before first day of studies? */}
-          {watchedIrishCitizen === yes_irishCitizen && (
-            <div className="flex flex-col">
-              <p>{errors.ukResident3YearsBeforeFirstDayOfStudies?.message}</p>
-              <label className="mb-1">
-                Are you a UK resident 3 years before first day of studies?
-              </label>
-              <select
-                {...register("ukResident3YearsBeforeFirstDayOfStudies")}
-                className="p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50  dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
-              >
-                <option value={"350,365"}>No</option>
-                <option value={"350,327"}>Yes</option>
-              </select>
-            </div>
-          )}
+          {
+            // @ts-ignore
+            watchedIrishCitizen === yes_irishCitizen && (
+              <div className="flex flex-col">
+                <p>{errors.ukResident3YearsBeforeFirstDayOfStudies?.message}</p>
+                <label className="mb-1">
+                  Are you a UK resident 3 years before first day of studies?
+                </label>
+                <select
+                  {...register("ukResident3YearsBeforeFirstDayOfStudies")}
+                  className="p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50  dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+                >
+                  <option value={"350,365"}>No</option>
+                  <option value={"350,327"}>Yes</option>
+                </select>
+              </div>
+            )
+          }
           {/* Are you a family member of a UK national living in the UK for the last 3 years? */}
           <div className="flex flex-col">
             <p>{errors.familyMemberUkLiving3years?.message}</p>
@@ -369,25 +376,28 @@ export default function form() {
             </select>
           </div>
           {/* Are you and your family member resident in the UK for the last 3 years prior first day of the academic year? */}
-          {watchedFamilyMemberUkLiving3years ===
-            yes_familyMemberUkLiving3years && (
-            <div className="flex flex-col">
-              <p>
-                {errors.bothUkResident3YearsBeforeFirstDayOfStudies?.message}
-              </p>
-              <label className="mb-1">
-                Are you and your family member resident in the UK or EEA for the
-                last 3 years prior first day of the academic year?
-              </label>
-              <select
-                {...register("bothUkResident3YearsBeforeFirstDayOfStudies")}
-                className="p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50  dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
-              >
-                <option value={"350,630"}>No</option>
-                <option value={"350,595"}>Yes</option>
-              </select>
-            </div>
-          )}
+          {
+            // @ts-ignore
+            watchedFamilyMemberUkLiving3years ===
+              yes_familyMemberUkLiving3years && (
+              <div className="flex flex-col">
+                <p>
+                  {errors.bothUkResident3YearsBeforeFirstDayOfStudies?.message}
+                </p>
+                <label className="mb-1">
+                  Are you and your family member resident in the UK or EEA for
+                  the last 3 years prior first day of the academic year?
+                </label>
+                <select
+                  {...register("bothUkResident3YearsBeforeFirstDayOfStudies")}
+                  className="p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50  dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
+                >
+                  <option value={"350,630"}>No</option>
+                  <option value={"350,595"}>Yes</option>
+                </select>
+              </div>
+            )
+          }
 
           {/* What is your residency status? */}
           <div className="flex flex-col">
