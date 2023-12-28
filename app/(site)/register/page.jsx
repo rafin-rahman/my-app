@@ -9,7 +9,11 @@ import LoadingButton from "../../../components/UI/loadingButton";
 export default function Register() {
   const session = useSession();
   const router = useRouter();
-  const [data, setData] = useState({ name: "", email: "", password: "" });
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,24 +24,31 @@ export default function Register() {
 
   const registerUser = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    // setLoading(true);
     try {
-      const response = await axios
-        .post("/api/register", data)
-        .then(() => toast.success("User created"));
+      const response = await axios.post("/api/register", data);
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data.message);
+        router.push("/login");
+      }
     } catch (err) {
-      console.log(err);
       if (err.response) {
         // The server responded with a non 2xx status code
-        toast.error(err.response.data); // or another appropriate property
+        toast.error(err.response.data.message); // or another appropriate property
+        console.log(err.response.data);
+
         setLoading(false);
       } else if (err.request) {
         // The request was made but no response was received
         toast.error("No response received from server");
+        console.log(err.request);
+
         setLoading(false);
       } else {
         // Something happened in setting up the request that triggered an error
         toast.error(err.message);
+        console.log("Error: ", err.message);
+
         setLoading(false);
       }
     }

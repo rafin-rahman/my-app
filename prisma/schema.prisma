@@ -50,9 +50,9 @@ model User {
   posts          Posts[]
   isActive       Boolean   @default(true)
   role           String[]  @default(["user"])
+  permissions    String[]
 
-  accounts    Account[]
-  permissions String[]
+  accounts Account[]
 }
 
 model VerificationToken {

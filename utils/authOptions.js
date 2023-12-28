@@ -42,7 +42,7 @@ export const authOptions = {
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-        console.log("User found:::", user);
+
         // if no user was found
         if (!user || !user?.hashedPassword) {
           throw new Error("Invalid credentials");
@@ -70,7 +70,7 @@ export const authOptions = {
         return {
           ...token,
           id: user.id,
-          role: "user",
+          role: user.role,
         };
       }
       if (trigger === "update" && session?.name) {

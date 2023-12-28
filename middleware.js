@@ -2,29 +2,19 @@ import { withAuth } from "next-auth/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
 export default withAuth(
-  // `withAuth` augments your `Request` with the user's token.
-  function middleware(req) {
-    console.log("token: ", req.nextauth.token);
-
-    if (
-      req.nextUrl.pathname.startsWith("/admin") &&
-      req.nextauth.token?.role !== "admin"
-    )
-      return NextResponse.rewrite(
-        new URL("/auth/login?message=You Are Not Authorized!", req.url)
-      );
-    if (
-      req.nextUrl.pathname.startsWith("/user") &&
-      req.nextauth.token?.role !== "user"
-    )
-      return NextResponse.rewrite(
-        new URL("/auth/login?message=You Are Not Authorized!", req.url)
-      );
+  function middleware({ req, err }) {
+    // extra function here after user has been validated
   },
   {
     callbacks: {
       // If token exist, it returns TRUE. User is authenticated.
-      authorized: ({ token }) => !!token,
+      authorized: ({ req, token }) => {
+        if (req.nextUrl.pathname === "/authorised/admin") {
+          return token?.role.includes("admin");
+        }
+
+        return Boolean(token);
+      },
     },
   }
 );
