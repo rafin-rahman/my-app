@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
 import UserSessionInfo from "@/components/UserSessionInfo";
+import Navbar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 async function getPosts() {
   try {
@@ -41,6 +43,7 @@ async function getPosts() {
 export default async function Home() {
   return (
     <>
+      <Navbar />
       <Hero />
       <Content1
         title={"Embracing Modernity"}
@@ -63,6 +66,7 @@ export default async function Home() {
         }
         imageUrl={"/illustrations/computer_illustration_UI.webp"}
       />
+      <Footer />
     </>
   );
 }
