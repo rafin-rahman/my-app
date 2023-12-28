@@ -7,7 +7,9 @@ const HeroSection = () => {
         src="/logos/logo_light.svg"
         alt="Logo"
       />
-      <p className="mt-4">"Next-generation tools for education management."</p>
+      <p className="mt-4">
+        "Next-generation tools for your company management."
+      </p>
     </div>
   );
 };
