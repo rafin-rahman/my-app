@@ -2,6 +2,16 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -10,6 +20,11 @@ const Navbar = () => {
     {
       name: "About",
       path: "/about",
+      loginRequired: false,
+    },
+    {
+      name: "Contact",
+      path: "/contact",
       loginRequired: false,
     },
     {
@@ -32,9 +47,9 @@ const Navbar = () => {
   return (
     <nav className="flex flex-col sm:flex-row justify-around items-center p-4 bg-gray-800 text-white">
       <Link href={"/"}>
-        <div className="font-bold mb-2 sm:mb-0">MyApp</div>
+        {/*<div className="font-bold mb-2 sm:mb-0">MyApp</div>*/}
         <img
-          className="mx-auto h-6 w-auto"
+          className="mx-auto h-8 w-auto"
           src="/logos/logo_dark.svg"
           alt="Logo"
         />
@@ -43,16 +58,17 @@ const Navbar = () => {
       {menuList.map((item) => {
         if (!item.loginRequired || (item.loginRequired && session)) {
           return (
-            <a
-              href={item.path}
-              key={item.name}
-              className={`${
-                pathname === item.path
-                  ? "text-orange-400 underline underline-offset-4 "
-                  : ""
-              } hover:bg-orange-500 hover:text-white font-bold py-2 px-4 rounded mt-1 sm:mt-0`}
-            >
-              {item.name}
+            <a href={item.path} key={item.name}>
+              <Button
+                className={`${
+                  pathname === item.path
+                    ? "text-orange-400  underline-offset-8"
+                    : ""
+                } dark  dark:underline dark:underline-offset-4 hover:dark:underline-offset-8 hover:text-orange-400 `}
+                variant={"link"}
+              >
+                {item.name}
+              </Button>
             </a>
           );
         }
@@ -60,29 +76,25 @@ const Navbar = () => {
 
       <div className="mt-2 sm:mt-0">
         {!session ? (
-          <Link
-            href="/login"
-            className={
-              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            }
-          >
-            Login
+          <Link href="/login">
+            <Button className={"dark"}>Login</Button>
           </Link>
         ) : (
-          <div
-            className={
-              "bg-gray-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded"
-            }
-          >
-            <button onClick={() => signOut()}>
-              Sign out - {session?.user?.name} -{" "}
-              {
-                // @ts-ignore
-                session?.user?.role
-              }
-            </button>
-            <Link href={"/app/manageUsers"}></Link>
-          </div>
+          <Select>
+            <SelectTrigger className="w-[180px] dark">
+              <SelectValue placeholder={session?.user?.name} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Navigation</SelectLabel>
+                <Button variant={"link"}>Admin</Button>
+                <SelectLabel>Settings</SelectLabel>
+                <Button onClick={() => signOut()} variant={"link"}>
+                  Logout
+                </Button>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         )}
       </div>
     </nav>

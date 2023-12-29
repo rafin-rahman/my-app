@@ -1,19 +1,50 @@
 "use client";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import GoogleButton from "@/components/GoogleButton";
 import { useRouter } from "next/navigation";
-import LoadingButton from "../../../components/UI/loadingButton";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../components/ui/form";
+import { Input } from "../../../components/ui/input";
+
+const formSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(3),
+  })
+  .refine((data) => data.email && data.password, {
+    message: "Please enter your email and password",
+    path: ["email", "password"],
+  });
 
 export default function Login() {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   const session = useSession();
   const router = useRouter();
   const [callbackUrl, setCallbackUrl] = useState("/");
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+  // const [data, setData] = useState({
+  //   email: "",
+  //   password: "",
+  // });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -36,11 +67,11 @@ export default function Login() {
     }
   }, [session]);
 
-  const loginUser = async (e) => {
-    e.preventDefault();
+  const loginUser = async (formValues) => {
+    // e.preventDefault();
     setLoading(true);
     const signInResponse = await signIn("credentials", {
-      ...data,
+      ...formValues,
       // redirect: false = won't redirect the user to a pre-build page from NextAuth
       redirect: false,
     });
@@ -64,11 +95,13 @@ export default function Login() {
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="/logos/logo_light.svg"
-          alt="Logo"
-        />
+        <Link href={"/"}>
+          <img
+            className="mx-auto h-10 w-auto"
+            src="/logos/logo_light.svg"
+            alt="Logo"
+          />
+        </Link>
 
         <div className={"mx-auto  max-w-sm"}>
           <GoogleButton />
@@ -81,83 +114,130 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={loginUser}>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
-                />
+          <Form {...form}>
+            <form
+              className="space-y-6"
+              // onSubmit={loginUser}
+              onSubmit={form.handleSubmit(loginUser)}
+            >
+              <div>
+                <div className="mt-2">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder={"Email address"}
+                              type={"email"}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  {/*<label*/}
+                  {/*  htmlFor="email"*/}
+                  {/*  className="block text-sm font-medium leading-6 text-gray-900"*/}
+                  {/*>*/}
+                  {/*  Email address*/}
+                  {/*</label>*/}
+                  {/*<input*/}
+                  {/*  id="email"*/}
+                  {/*  name="email"*/}
+                  {/*  type="email"*/}
+                  {/*  autoComplete="email"*/}
+                  {/*  required*/}
+                  {/*  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"*/}
+                  {/*  value={data.email}*/}
+                  {/*  onChange={(e) =>*/}
+                  {/*    setData({ ...data, email: e.target.value })*/}
+                  {/*  }*/}
+                  {/*/>*/}
+                </div>
               </div>
-            </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
+              <div>
+                <FormField
+                  control={form.control}
                   name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, password: e.target.value })
-                  }
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={"Password"}
+                            type={"password"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
+                {/*<div className="flex items-center justify-between">*/}
+                {/*  <label*/}
+                {/*    htmlFor="password"*/}
+                {/*    className="block text-sm font-medium leading-6 text-gray-900"*/}
+                {/*  >*/}
+                {/*    Password*/}
+                {/*  </label>*/}
+                {/*</div>*/}
+                {/*<div className="mt-2">*/}
+                {/*  <input*/}
+                {/*    id="password"*/}
+                {/*    name="password"*/}
+                {/*    type="password"*/}
+                {/*    autoComplete="current-password"*/}
+                {/*    required*/}
+                {/*    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"*/}
+                {/*    value={data.password}*/}
+                {/*    onChange={(e) =>*/}
+                {/*      setData({ ...data, password: e.target.value })*/}
+                {/*    }*/}
+                {/*  />*/}
+                {/*</div>*/}
               </div>
-            </div>
 
-            <div>
-              {loading ? (
-                <LoadingButton loadingText="Login" />
-              ) : (
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              <div>
+                {loading ? (
+                  <Button disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading...
+                  </Button>
+                ) : (
+                  <Button className={"w-full"} type="submit">
+                    Login
+                  </Button>
+                )}
+              </div>
+
+              <div className="text-sm">
+                <a
+                  href="#"
+                  className="font-semibold text-gray-600 hover:text-gray-500"
                 >
-                  Login
-                </button>
-              )}
-            </div>
-            <div className="text-sm">
-              <a
-                href="#"
-                className="font-semibold text-gray-600 hover:text-gray-500"
-              >
-                Forgot password?
-              </a>
-            </div>
-            {/* register link */}
-            <div className="text-sm">
-              <a
-                href="/register"
-                className="font-semibold text-gray-600 hover:text-gray-500"
-              >
-                Don't have an account? Register here
-              </a>
-            </div>
-          </form>
+                  Forgot password?
+                </a>
+              </div>
+              {/* register link */}
+              <div className="text-sm">
+                <a
+                  href="/register"
+                  className="font-semibold text-gray-600 hover:text-gray-500"
+                >
+                  Don't have an account? Register here
+                </a>
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
     </>
