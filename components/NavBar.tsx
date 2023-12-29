@@ -14,17 +14,17 @@ const Navbar = () => {
     },
     {
       name: "Admin",
-      path: "/authorised/admin",
+      path: "/app/admin",
       loginRequired: true,
     },
     {
       name: "Manager",
-      path: "/authorised/manager",
+      path: "/app/manager",
       loginRequired: true,
     },
     {
       name: "Super Admin",
-      path: "/authorised/superadmin",
+      path: "/app/superadmin",
       loginRequired: true,
     },
   ];
@@ -81,6 +81,7 @@ const Navbar = () => {
                 session?.user?.role
               }
             </button>
+            <Link href={"/app/manageUsers"}></Link>
           </div>
         )}
       </div>

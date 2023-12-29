@@ -41,6 +41,7 @@ async function getPosts() {
   }
 }
 export default async function Home() {
+  console.log("rendeding home page");
   return (
     <>
       <Navbar />
