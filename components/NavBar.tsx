@@ -24,7 +24,7 @@ const Navbar = () => {
     },
     {
       name: "Super Admin",
-      path: "/app/superadmin",
+      path: "/app/superAdmin",
       loginRequired: true,
     },
   ];

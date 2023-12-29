@@ -44,12 +44,30 @@ export default async function middleware(req, event) {
   const token = await getToken({ req });
   console.log("my log", req.method, req.nextUrl.pathname, token?.role);
 
+  // allow only superAdmin or admin to access /app/admin
   if (
     req.nextUrl.pathname.includes("/app/admin") &&
     !(token?.role?.includes("superAdmin") || token?.role?.includes("admin"))
   ) {
     return NextResponse.redirect(new URL("/", req.url));
   }
+
+  // allow only superAdmin to access /app/superAdmin
+  if (
+    req.nextUrl.pathname.includes("/app/superAdmin") &&
+    !token?.role?.includes("superAdmin")
+  ) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // allow only superAdmin or manager to access /app/manager
+  if (
+    req.nextUrl.pathname.includes("/app/manager") &&
+    !(token?.role?.includes("superAdmin") || token?.role?.includes("manager"))
+  ) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
   return NextResponse.next();
 
   const authMiddleware = await withAuth({
