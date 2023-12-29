@@ -1,8 +1,14 @@
 "use client";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const navigation = [
-  { name: "Manage users", href: "#", count: "5", current: true },
+  {
+    name: "Manage users",
+    href: "/app/superAdmin/manageUsers",
+    count: "5",
+    current: true,
+  },
   { name: "Team", href: "#", current: false },
   {
     name: "Projects",
@@ -30,10 +36,10 @@ export default function Example() {
   const { data: session } = useSession();
   return (
     <div className="flex  flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
-      <div className="flex h-16 shrink-0 items-center pt-2">
+      <Link href={"/"} className="flex h-16 shrink-0 items-center pt-2">
         <img className="h-8 w-auto" src="/logos/logo_dark.svg" alt="logo" />
         <div className={"text-white ml-2"}>MyApp</div>
-      </div>
+      </Link>
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col gap-y-7">
           <li>

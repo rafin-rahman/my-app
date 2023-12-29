@@ -34,6 +34,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Ignore requests that aren't for the app or API.
 
 export default async function middleware(req, event) {
+  // enable this in case there are too many renderings
   // if (
   //   !req.nextUrl.pathname.startsWith("/app") &&
   //   !req.nextUrl.pathname.startsWith("/api")

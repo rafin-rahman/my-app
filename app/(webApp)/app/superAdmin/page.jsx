@@ -1,4 +1,8 @@
-export default function Superadmin() {
+// import ManageUsers from "@/components/ManageUsers";
+// import ManageSettings from "@/components/ManageSettings";
+// import ManageReports from "@/components/ManageReports";
+
+export default function SuperAdmin() {
   return (
     <>
       {/* make a basic super admin page */}
