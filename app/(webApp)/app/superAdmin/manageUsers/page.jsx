@@ -27,7 +27,6 @@ export default async function ManageUsers() {
   data.map((item, index) => {
     item.rowNumber = index + 1;
   });
-  console.log(data);
 
   if (!data) {
     return <div className={"text-5xl"}>Ops! No user found &#128542;</div>;
