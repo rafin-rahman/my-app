@@ -9,23 +9,6 @@ const navigation = [
     count: "5",
     current: true,
   },
-  { name: "Team", href: "#", current: false },
-  {
-    name: "Projects",
-    href: "#",
-
-    count: "12",
-    current: false,
-  },
-  {
-    name: "Calendar",
-    href: "#",
-
-    count: "20+",
-    current: false,
-  },
-  { name: "Documents", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
 ];
 
 function classNames(...classes) {

@@ -45,11 +45,18 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "isActive",
     header: "User Status",
+    cell: ({ row }) => {
+      return row.getValue("isActive") ? (
+        <span className="text-green-600">Active</span>
+      ) : (
+        <span className="text-red-600">Inactive</span>
+      );
+    },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const user = row.original;
 
       return (
         <DropdownMenu>
@@ -62,9 +69,9 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(user.id)}
             >
-              Copy payment ID
+              Copy User ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
