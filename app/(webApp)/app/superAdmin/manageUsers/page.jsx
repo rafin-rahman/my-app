@@ -1,11 +1,41 @@
-export default function ManageUsers() {
+import { Payment, columns } from "./columns";
+import { DataTable } from "./data-table";
+import { prisma } from "../../../../../lib/prisma";
+
+async function getData() {
+  try {
+    const data = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export default async function ManageUsers() {
+  const data = await getData();
+  // add row number to data, data does not contain row number field
+  data.map((item, index) => {
+    item.rowNumber = index + 1;
+  });
+  console.log(data);
+
+  if (!data) {
+    return <div className={"text-5xl"}>Ops! No user found &#128542;</div>;
+  }
+
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <main className="flex flex-col items-center justify-center flex-1 px-20 text-center">
-          <h1 className="text-6xl font-bold">Manage Users</h1>
-          <p className="mt-3 text-2xl">This is the manage users page.</p>
-        </main>
+      <div className="container mx-auto py-10">
+        <DataTable columns={columns} data={data} />
       </div>
     </>
   );
