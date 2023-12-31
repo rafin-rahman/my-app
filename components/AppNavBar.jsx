@@ -6,7 +6,7 @@ const navigation = [
   {
     name: "Manage users",
     href: "/app/superAdmin/manageUsers",
-    count: "5",
+    // count: "5",
     current: true,
   },
 ];

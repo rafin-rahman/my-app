@@ -6,15 +6,48 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingButton from "../../../components/ui/loadingButton";
 import Link from "next/link";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../components/ui/form";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
+import { Loader2 } from "lucide-react";
+
+const formSchema = z
+  .object({
+    name: z.string().min(3, "Name must be at least 3 characters long"),
+    email: z.string().email("Please enter your email"),
+    password: z.string().min(3, "Password must be at least 3 characters long"),
+    confirmPassword: z
+      .string()
+      .min(3, "Confirm Password must be at least 3 characters long"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export default function Register() {
   const session = useSession();
   const router = useRouter();
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -23,11 +56,10 @@ export default function Register() {
     }
   });
 
-  const registerUser = async (e) => {
-    e.preventDefault();
-    // setLoading(true);
+  const registerUser = async (values) => {
+    setLoading(true);
     try {
-      const response = await axios.post("/api/register", data);
+      const response = await axios.post("/api/register", values);
       if (response.status === 200 || response.status === 201) {
         toast.success(response.data.message);
         router.push("/login");
@@ -71,102 +103,126 @@ export default function Register() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={registerUser}>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(registerUser)}
+              className="space-y-8"
+            >
+              <>
+                <FormField
+                  control={form.control}
                   name="name"
-                  type="text"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={data.name}
-                  onChange={(e) => setData({ ...data, name: e.target.value })}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Your name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={"Your name"}
+                            type={"text"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
+              </>
+              <>
+                <FormField
+                  control={form.control}
                   name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Your email</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={"abc@example.com"}
+                            type="email"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
+              </>
+              <>
+                <FormField
+                  control={form.control}
                   name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, password: e.target.value })
-                  }
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={"******"}
+                            type={"password"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
+              </>
+              <>
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Re-enter your Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={"******"}
+                            type={"password"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+              </>
+              <div>
+                {loading ? (
+                  <Button disabled className={"w-full"}>
+                    <Loader2 className={"animate-spin"} size={24} />
+                    Loading...
+                  </Button>
+                ) : (
+                  <Button type="submit" className={"w-full"}>
+                    Register
+                  </Button>
+                )}
               </div>
-            </div>
-
-            <div>
-              {loading ? (
-                <LoadingButton loading={"loading..."} />
-              ) : (
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              {/*<div className="text-sm">*/}
+              {/*  <a*/}
+              {/*    href="#"*/}
+              {/*    className="font-semibold text-gray-600 hover:text-gray-500"*/}
+              {/*  >*/}
+              {/*    Forgot password?*/}
+              {/*  </a>*/}
+              {/*</div>*/}
+              {/*  Link to login page */}
+              <div className="text-sm">
+                <a
+                  href="/login"
+                  className="font-semibold text-gray-600 hover:text-gray-500"
                 >
-                  Register
-                </button>
-              )}
-            </div>
-            <div className="text-sm">
-              <a
-                href="#"
-                className="font-semibold text-gray-600 hover:text-gray-500"
-              >
-                Forgot password?
-              </a>
-            </div>
-            {/*  Link to login page */}
-            <div className="text-sm">
-              <a
-                href="/login"
-                className="font-semibold text-gray-600 hover:text-gray-500"
-              >
-                Already have an account?
-              </a>
-            </div>
-          </form>
+                  Already have an account?
+                </a>
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
     </>

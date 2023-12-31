@@ -41,10 +41,7 @@ export default function Login() {
   const session = useSession();
   const router = useRouter();
   const [callbackUrl, setCallbackUrl] = useState("/");
-  // const [data, setData] = useState({
-  //   email: "",
-  //   password: "",
-  // });
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -67,11 +64,11 @@ export default function Login() {
     }
   }, [session]);
 
-  const loginUser = async (formValues) => {
+  const loginUser = async (values) => {
     // e.preventDefault();
     setLoading(true);
     const signInResponse = await signIn("credentials", {
-      ...formValues,
+      ...values,
       // redirect: false = won't redirect the user to a pre-build page from NextAuth
       redirect: false,
     });
@@ -141,24 +138,6 @@ export default function Login() {
                       );
                     }}
                   />
-                  {/*<label*/}
-                  {/*  htmlFor="email"*/}
-                  {/*  className="block text-sm font-medium leading-6 text-gray-900"*/}
-                  {/*>*/}
-                  {/*  Email address*/}
-                  {/*</label>*/}
-                  {/*<input*/}
-                  {/*  id="email"*/}
-                  {/*  name="email"*/}
-                  {/*  type="email"*/}
-                  {/*  autoComplete="email"*/}
-                  {/*  required*/}
-                  {/*  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"*/}
-                  {/*  value={data.email}*/}
-                  {/*  onChange={(e) =>*/}
-                  {/*    setData({ ...data, email: e.target.value })*/}
-                  {/*  }*/}
-                  {/*/>*/}
                 </div>
               </div>
 
@@ -182,28 +161,6 @@ export default function Login() {
                     );
                   }}
                 />
-                {/*<div className="flex items-center justify-between">*/}
-                {/*  <label*/}
-                {/*    htmlFor="password"*/}
-                {/*    className="block text-sm font-medium leading-6 text-gray-900"*/}
-                {/*  >*/}
-                {/*    Password*/}
-                {/*  </label>*/}
-                {/*</div>*/}
-                {/*<div className="mt-2">*/}
-                {/*  <input*/}
-                {/*    id="password"*/}
-                {/*    name="password"*/}
-                {/*    type="password"*/}
-                {/*    autoComplete="current-password"*/}
-                {/*    required*/}
-                {/*    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"*/}
-                {/*    value={data.password}*/}
-                {/*    onChange={(e) =>*/}
-                {/*      setData({ ...data, password: e.target.value })*/}
-                {/*    }*/}
-                {/*  />*/}
-                {/*</div>*/}
               </div>
 
               <div>
@@ -219,14 +176,14 @@ export default function Login() {
                 )}
               </div>
 
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-semibold text-gray-600 hover:text-gray-500"
-                >
-                  Forgot password?
-                </a>
-              </div>
+              {/*<div className="text-sm">*/}
+              {/*  <a*/}
+              {/*    href="#"*/}
+              {/*    className="font-semibold text-gray-600 hover:text-gray-500"*/}
+              {/*  >*/}
+              {/*    Forgot password?*/}
+              {/*  </a>*/}
+              {/*</div>*/}
               {/* register link */}
               <div className="text-sm">
                 <a
