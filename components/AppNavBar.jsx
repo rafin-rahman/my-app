@@ -9,6 +9,12 @@ const navigation = [
     // count: "5",
     current: true,
   },
+  {
+    name: "My Profile",
+    href: "/app/superAdmin/manageUsers/userProfile/clqlidfap00009ptvjfdjwujc",
+    // count: "5",
+    current: true,
+  },
 ];
 
 function classNames(...classes) {

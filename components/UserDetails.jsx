@@ -1,6 +1,10 @@
 import * as React from "react";
-
+import { prisma } from "@/lib/prisma";
+import { Toaster } from "react-hot-toast";
+import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Upload } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -18,8 +22,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DropZone from "./DropZone";
 
-export default function CardWithForm() {
+export default async function UserProfile({ userId }) {
+  let user = "";
+  try {
+    user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    if (error.code === "P2025") {
+      return <div>User not found</div>;
+    } else {
+      return <div>Something went wrong</div>;
+    }
+  }
+
   return (
     <div className={"flex items-center flex-col"}>
       <Card className="w-[650px] m-10">
@@ -28,11 +49,22 @@ export default function CardWithForm() {
           <CardDescription>Update user profile information.</CardDescription>
         </CardHeader>
         <CardContent>
+          <div className={"flex py-4"}>
+            <Avatar className={"mx-2"}>
+              <AvatarImage src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/220px-BMW.svg.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Button variant={"outline"}>
+              <Upload className="mr-2 h-4 w-4" /> Upload new profile picture
+            </Button>
+          </div>
+          <DropZone />
+          <Separator orientation="horizontal" className={"my-4"} />
           <form>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Name of your project" />
+                <Input id="name" placeholder={user.name} />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="framework">Framework</Label>

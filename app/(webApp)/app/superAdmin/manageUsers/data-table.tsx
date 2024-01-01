@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className={"flex items-end"}>
+      <div className={"flex items-center justify-items-start space-x-2 px-2"}>
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter emails..."
