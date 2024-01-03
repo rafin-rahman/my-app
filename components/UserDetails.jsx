@@ -1,10 +1,8 @@
 import * as React from "react";
 import { prisma } from "@/lib/prisma";
-import { Toaster } from "react-hot-toast";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Upload } from "lucide-react";
+
 import {
   Card,
   CardContent,
@@ -49,16 +47,7 @@ export default async function UserProfile({ userId }) {
           <CardDescription>Update user profile information.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className={"flex py-4"}>
-            <Avatar className={"mx-2"}>
-              <AvatarImage src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/220px-BMW.svg.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <Button variant={"outline"}>
-              <Upload className="mr-2 h-4 w-4" /> Upload new profile picture
-            </Button>
-          </div>
-          <DropZone />
+          <DropZone userId={user.id} />
           <Separator orientation="horizontal" className={"my-4"} />
           <form>
             <div className="grid w-full items-center gap-4">
