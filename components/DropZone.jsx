@@ -8,20 +8,32 @@ import { Upload } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function Dropzone({ userId }) {
   const [files, setFiles] = useState([]);
   const [dropzoneVisibility, setDropzoneVisibility] = useState(false);
   const { data: session, status } = useSession();
+  // const [userId, setUserId] = useState(session.user.id);
+  // const router = useRouter();
+  // const isManageUserRoute = router.pathname.includes("manageUsers");
+  // if (isManageUserRoute) {
+  //   setUserId(router.query.userId);
+  // }
 
   const [profilePictureUrl, setProfilePictureUrl] = useState(
+    `https://my-app-test.s3.eu-west-2.amazonaws.com/profile-pictures/${userId}/profile-pic`
+  );
+  console.log(
+    "profilePictureUrl:",
     `https://my-app-test.s3.eu-west-2.amazonaws.com/profile-pictures/${userId}/profile-pic`
   );
   async function handleSubmit() {
     // send file to AWS S3
     const formData = new FormData();
     formData.append("file", files[0]);
-    formData.append("userId", session.user.id);
+    // formData.append("userId", session.user.id);
+    formData.append("userId", userId);
     try {
       const res = await axios.post("/api/fileUpload/profilePicture", formData, {
         headers: {
@@ -116,7 +128,7 @@ function Dropzone({ userId }) {
                     Upload or drag your document here
                   </p>
                   <p className="text-blue-200 font-light">
-                    Only images are allowed, up to 8MB{" "}
+                    Only images are allowed, up to 8MB
                   </p>
                 </div>
               )}
