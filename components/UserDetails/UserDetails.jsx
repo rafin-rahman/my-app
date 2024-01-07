@@ -30,7 +30,13 @@ export default async function UserProfile({ userId }) {
       where: {
         id: userId,
       },
+      select: {
+        firstName: true,
+        lastName: true,
+        accounts: true,
+      },
     });
+    console.log("My user details: ", user);
   } catch (error) {
     console.log(error);
     if (error.code === "P2025") {
@@ -60,7 +66,8 @@ export default async function UserProfile({ userId }) {
           <CardDescription>Update user profile information.</CardDescription>
         </CardHeader>
         <CardContent>
-          <DropZone userId={user.id} />
+          {!user.accounts.length > 0 && <DropZone userId={user.id} />}
+
           <Separator orientation="horizontal" className={"my-4"} />
           <_nameForm textContent={user.name} />
         </CardContent>

@@ -61,7 +61,7 @@ export default function form() {
             </h1>
           </div>
           <div className="w-1/2">
-            {/* Image component to add a SFE logo*/}
+            {/* Image component to add a SFE logo_dark*/}
             <Image
               className={"top-[70px] right-[100px] absolute"}
               src="/logos/sfe.png"

@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import NextAuth, { DefaultSession } from "next-auth";
 
 export const authOptions = {
   providers: [
@@ -58,14 +58,13 @@ export const authOptions = {
         if (!passwordMatch) {
           throw new Error("Invalid credentials");
         }
-
         return user;
       },
     }),
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, account, trigger, session }) {
       // pass user ID and user role into token
       if (user) {
         return {
@@ -74,6 +73,7 @@ export const authOptions = {
           role: user.role,
           firstName: user.firstName,
           lastName: user.lastName,
+          image: user.image,
         };
       }
       if (trigger === "update" && session?.firstName) {
@@ -81,15 +81,16 @@ export const authOptions = {
       }
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token, user, profile }) {
       return {
         ...session,
         user: {
-          ...session.firstName,
+          ...session.user,
           id: token.id,
           role: token.role,
           firstName: token.firstName,
           lastName: token.lastName,
+          image: token.image,
         },
       };
     },
@@ -103,7 +104,7 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    // maxAge: 10 * 60, // 10 minutes
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,

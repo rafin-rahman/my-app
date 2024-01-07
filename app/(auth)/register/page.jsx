@@ -19,6 +19,7 @@ import {
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
+import { SEO } from "../../../utils/company";
 
 const formSchema = z
   .object({
@@ -95,7 +96,7 @@ export default function Register() {
           <Link href={"/"}>
             <img
               className="mx-auto h-10 w-auto"
-              src="/logos/logo_light.svg"
+              src={SEO.logo_light}
               alt="Logo"
             />
           </Link>

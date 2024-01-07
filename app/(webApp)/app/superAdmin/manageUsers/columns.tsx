@@ -11,19 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { User } from "@/utils/types";
 // This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
-  hashedPassword: string;
-  isActive: boolean;
-  role: [string];
-  permissions: [string];
-};
 
 // NOTE: rowNumber is not stored in the databse, is generated from the index value
 export const columns: ColumnDef<User>[] = [
