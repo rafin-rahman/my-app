@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/utils/company";
 
 import {
   Popover,
@@ -46,12 +47,8 @@ const Navbar = () => {
   return (
     <nav className="flex flex-col sm:flex-row justify-around items-center p-4 bg-gray-800 text-white">
       <Link href={"/"}>
-        {/*<div className="font-bold mb-2 sm:mb-0">MyApp</div>*/}
-        <img
-          className="mx-auto h-8 w-auto"
-          src="/logos/logo_dark.svg"
-          alt="Logo"
-        />
+        {/*<div className="font-bold mb-2 sm:mb-0">{SEO.companyName}</div>*/}
+        <img className="mx-auto h-8 w-auto" src={SEO.logo} alt="Logo" />
       </Link>
 
       {menuList.map((item) => {

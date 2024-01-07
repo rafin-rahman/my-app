@@ -1,4 +1,4 @@
-import UserDetails from "@/components/UserDetails";
+import UserDetails from "@/components/UserDetails/UserDetails";
 
 export default function UserProfile({ params }) {
   return (

@@ -1,8 +1,8 @@
 "use client";
+import { useState, useEffect, useRef } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import GoogleButton from "@/components/GoogleButton";
@@ -117,28 +117,26 @@ export default function Login() {
               // onSubmit={loginUser}
               onSubmit={form.handleSubmit(loginUser)}
             >
-              <div>
-                <div className="mt-2">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => {
-                      return (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder={"Email address"}
-                              type={"email"}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      );
-                    }}
-                  />
-                </div>
+              <div className="mt-2">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={"Email address"}
+                            type={"email"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
               </div>
 
               <div>

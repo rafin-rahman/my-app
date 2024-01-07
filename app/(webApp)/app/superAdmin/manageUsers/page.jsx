@@ -1,13 +1,13 @@
-import { Payment, columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { prisma } from "../../../../../lib/prisma";
 
-async function getData() {
+async function getAllUsers() {
   try {
-    const data = await prisma.user.findMany({
+    return await prisma.user.findMany({
       select: {
         id: true,
-        name: true,
+        firstName: true,
         email: true,
         role: true,
         isActive: true,
@@ -15,27 +15,32 @@ async function getData() {
         updatedAt: true,
       },
     });
-
-    return data;
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
-export default async function ManageUsers() {
-  const data = await getData();
-  // add row number to data, data does not contain row number field
-  data.map((item, index) => {
+
+function addRowNumberToUserModel(users) {
+  users.map((item, index) => {
     item.rowNumber = index + 1;
   });
+  return users;
+}
 
-  if (!data) {
+export default async function ManageUsers() {
+  let users = await getAllUsers();
+
+  if (!users) {
     return <div className={"text-5xl"}>Ops! No user found &#128542;</div>;
   }
+
+  users = addRowNumberToUserModel(users);
 
   return (
     <>
       <div className="container mx-auto py-10">
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={users} />
       </div>
     </>
   );

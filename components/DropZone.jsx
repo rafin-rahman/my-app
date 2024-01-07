@@ -24,10 +24,7 @@ function Dropzone({ userId }) {
   const [profilePictureUrl, setProfilePictureUrl] = useState(
     `https://my-app-test.s3.eu-west-2.amazonaws.com/profile-pictures/${userId}/profile-pic`
   );
-  console.log(
-    "profilePictureUrl:",
-    `https://my-app-test.s3.eu-west-2.amazonaws.com/profile-pictures/${userId}/profile-pic`
-  );
+
   async function handleSubmit() {
     // send file to AWS S3
     const formData = new FormData();

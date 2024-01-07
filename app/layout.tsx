@@ -7,12 +7,13 @@ import { getServerSession } from "next-auth";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { logDbConnections } from "@/utils/logDbConnections";
+import { SEO } from "@/utils/company";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MyApp",
-  description: "Application template",
+  title: SEO.companyName,
+  description: SEO.description,
 };
 
 export default async function RootLayout({

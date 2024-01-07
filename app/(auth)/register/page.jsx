@@ -22,7 +22,10 @@ import { Loader2 } from "lucide-react";
 
 const formSchema = z
   .object({
-    name: z.string().min(3, "Name must be at least 3 characters long"),
+    firstName: z
+      .string()
+      .min(3, "First name must be at least 3 characters long"),
+    lastName: z.string().min(3, "Last name must be at least 3 characters long"),
     email: z.string().email("Please enter your email"),
     password: z.string().min(3, "Password must be at least 3 characters long"),
     confirmPassword: z
@@ -35,19 +38,19 @@ const formSchema = z
   });
 
 export default function Register() {
+  const [loading, setLoading] = useState(false);
   const session = useSession();
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
-
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (session?.status === "authenticated") {
@@ -110,14 +113,35 @@ export default function Register() {
               <>
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="firstName"
                   render={({ field }) => {
                     return (
                       <FormItem>
-                        <FormLabel>Your name</FormLabel>
+                        <FormLabel>First name</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder={"Your name"}
+                            placeholder={"First name"}
+                            type={"text"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+              </>
+              <>
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Last name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={"Last name"}
                             type={"text"}
                             {...field}
                           />

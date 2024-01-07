@@ -1,7 +1,12 @@
+import { SEO } from "@/utils/company";
+
 const Footer = () => {
   return (
     <footer className="p-4 bg-gray-800 text-white text-center">
-      <p>© 2023 MyApp. All rights reserved.</p>
+      {/*  current year (e.g. 2023) */}
+      <p>
+        © {new Date().getFullYear()} {SEO.companyName}. All rights reserved.
+      </p>
     </footer>
   );
 };

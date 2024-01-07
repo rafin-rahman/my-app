@@ -1,6 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { SEO } from "@/utils/company";
 
 const navigation = [
   {
@@ -26,7 +27,7 @@ export default function Example() {
   return (
     <div className="flex  flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
       <Link href={"/"} className="flex h-16 shrink-0 items-center pt-2">
-        <img className="h-8 w-auto" src="/logos/logo_dark.svg" alt="logo" />
+        <img className="h-8 w-auto" src={SEO.logo} alt="logo" />
         <div className={"text-white ml-2"}>MyApp</div>
       </Link>
       <nav className="flex flex-1 flex-col">
