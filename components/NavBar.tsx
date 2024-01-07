@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 
 const Navbar = () => {
   const { data: session } = useSession();
+  console.log(session);
   const pathname = usePathname();
   const menuList = [
     {
@@ -78,7 +79,7 @@ const Navbar = () => {
         ) : (
           <Popover>
             <PopoverTrigger asChild className={"text-black"}>
-              <Button variant="outline">{session?.user?.name}</Button>
+              <Button variant="outline">{session?.user?.firstName}</Button>
             </PopoverTrigger>
             <PopoverContent className="w-40">
               <div className="space-y-2">

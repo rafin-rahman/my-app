@@ -1,47 +1,9 @@
 import Hero from "@/components/Hero";
 import Content1 from "@/components/Content1";
-import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/utils/authOptions";
-import UserSessionInfo from "@/components/UserSessionInfo";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
-async function getPosts() {
-  try {
-    const posts = await prisma.posts.findMany({
-      include: {
-        author: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
-    if (posts.length === 0 || !posts)
-      return (
-        <div className="p-4 bg-white shadow rounded-lg my-2 text-center">
-          <h2 className="text-2xl text-gray-700">OPS, no posts found</h2>
-        </div>
-      );
-
-    return posts.map((post) => (
-      <div
-        key={post.id}
-        className="p-4 bg-white shadow rounded-lg my-2 text-center"
-      >
-        <h2 className="text-2xl text-gray-700">{post.title}</h2>
-        <p className="text-gray-500">{post.author?.name}</p>
-      </div>
-    ));
-  } catch (error) {
-    console.log(error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
 export default async function Home() {
-  console.log("rendeding home page");
   return (
     <>
       <Navbar />

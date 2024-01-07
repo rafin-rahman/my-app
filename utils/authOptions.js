@@ -73,8 +73,8 @@ export const authOptions = {
           role: user.role,
         };
       }
-      if (trigger === "update" && session?.name) {
-        token.name = session.name;
+      if (trigger === "update" && session?.firstName) {
+        token.firstName = session.firstName;
       }
       return token;
     },
@@ -82,10 +82,10 @@ export const authOptions = {
       return {
         ...session,
         user: {
-          ...session.user,
+          ...session.firstName,
           id: token.id,
           role: token.role,
-          name: token.name,
+          firstName: token.firstName,
         },
       };
     },
