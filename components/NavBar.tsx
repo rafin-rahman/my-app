@@ -10,12 +10,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 const Navbar = () => {
   const { data: session } = useSession();
-  console.log(session);
+  console.log("session log:", session?.user?.firstName);
   const pathname = usePathname();
   const menuList = [
     {
@@ -79,7 +77,9 @@ const Navbar = () => {
         ) : (
           <Popover>
             <PopoverTrigger asChild className={"text-black"}>
-              <Button variant="outline">{session?.user?.firstName}</Button>
+              <Button variant="outline">
+                {session?.user?.firstName + " " + session?.user?.lastName}
+              </Button>
             </PopoverTrigger>
             <PopoverContent className="w-40">
               <div className="space-y-2">

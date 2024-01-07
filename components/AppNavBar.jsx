@@ -74,7 +74,7 @@ export default function Example() {
               ) : null}
 
               <span className="sr-only">Your profile</span>
-              <span aria-hidden="true">{session?.user?.name}</span>
+              <span aria-hidden="true">{session?.user?.firstName}</span>
             </a>
           </li>
         </ul>

@@ -13,7 +13,8 @@ export const authOptions = {
       profile: async (profile) => {
         return {
           id: profile.sub,
-          name: profile.name,
+          firstName: profile.name.split(" ")[0],
+          lastName: profile.name.split(" ")[1],
           email: profile.email,
           image: profile.picture,
         };
@@ -71,6 +72,8 @@ export const authOptions = {
           ...token,
           id: user.id,
           role: user.role,
+          firstName: user.firstName,
+          lastName: user.lastName,
         };
       }
       if (trigger === "update" && session?.firstName) {
@@ -86,6 +89,7 @@ export const authOptions = {
           id: token.id,
           role: token.role,
           firstName: token.firstName,
+          lastName: token.lastName,
         },
       };
     },

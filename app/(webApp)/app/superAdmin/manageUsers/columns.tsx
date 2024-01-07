@@ -32,7 +32,7 @@ export const columns: ColumnDef<User>[] = [
     header: "#",
   },
   {
-    accessorKey: "name",
+    accessorKey: "firstName",
     header: ({ column }) => {
       return (
         <Button
@@ -40,7 +40,7 @@ export const columns: ColumnDef<User>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className={"-ml-4"}
         >
-          Name
+          Full name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
