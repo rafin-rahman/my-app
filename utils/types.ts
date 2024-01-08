@@ -39,15 +39,3 @@ export type FormInputs = {
   // a6
   childOfSwissNational: boolean;
 };
-
-export type User = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  image: string;
-  hashedPassword: string;
-  isActive: boolean;
-  role: [string];
-  permissions: [string];
-};

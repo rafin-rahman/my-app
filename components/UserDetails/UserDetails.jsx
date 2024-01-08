@@ -36,7 +36,6 @@ export default async function UserProfile({ userId }) {
         accounts: true,
       },
     });
-    console.log("My user details: ", user);
   } catch (error) {
     console.log(error);
     if (error.code === "P2025") {

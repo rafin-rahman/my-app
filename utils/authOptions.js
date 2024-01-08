@@ -64,7 +64,11 @@ export const authOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
-    async jwt({ token, user, account, trigger, session }) {
+    async jwt({ token, user, trigger, session }) {
+      // console.log("JWTToken", token);
+      // console.log("JWTUser", user);
+      // console.log("JWTTrigger", trigger);
+      // console.log("JWTSession", session);
       // pass user ID and user role into token
       if (user) {
         return {
@@ -81,7 +85,11 @@ export const authOptions = {
       }
       return token;
     },
-    async session({ session, token, user, profile }) {
+    async session({ session, token, user }) {
+      // console.log("SessionSession", session);
+      // console.log("SessionToken", token);
+      // console.log("SessionUser", user);
+
       return {
         ...session,
         user: {
@@ -94,6 +102,7 @@ export const authOptions = {
         },
       };
     },
+
     async redirect({ url, baseUrl }) {
       return baseUrl;
     },

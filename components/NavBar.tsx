@@ -42,10 +42,10 @@ const MENU_LINKS = [
 
 const Navbar = () => {
   const { data: session } = useSession();
-  console.log("session log:", session);
+  console.log("navbar session: ", session);
   const pathname = usePathname();
 
-  const renderMenuItem = (item) => {
+  const renderMenuItem = (item: any) => {
     if (!item.loginRequired || (item.loginRequired && session)) {
       return (
         <a href={item.path} key={item.name}>
@@ -99,6 +99,14 @@ const Navbar = () => {
                   <Button variant={"link"}>Admin</Button>
                 </a>
                 <h4 className="font-medium leading-none">Settings</h4>
+                <a
+                  href={`/app/userProfile/${
+                    // @ts-ignore
+                    session?.user?.id
+                  }`}
+                >
+                  <Button variant={"link"}>My Profile</Button>
+                </a>
                 <Button onClick={() => signOut()} variant={"link"}>
                   Logout
                 </Button>
