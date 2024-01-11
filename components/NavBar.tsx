@@ -46,25 +46,20 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const isUserRoleValid = (itemPath: string, sessionRole: string) => {
-    if (itemPath.includes("superAdmin")) {
-      return sessionRole === "superAdmin";
+    if (itemPath.includes(sessionRole) || sessionRole == "superAdmin") {
+      return true;
     }
-    if (itemPath.includes("manager")) {
-      return sessionRole === "manager" || sessionRole === "superAdmin";
-    }
-    if (itemPath.includes("admin")) {
-      return sessionRole === "admin" || sessionRole === "superAdmin";
-    }
-    return true;
+    return false;
   };
   const renderMenuItem = (item: any) => {
+    console.log(isUserRoleValid(item.path, session?.user?.role));
     if (item.loginRequired && !session) {
       return;
     }
 
     if (item.loginRequired && session) {
       // @ts-ignore
-      if (!isUserRoleValid(item.path, session.user.role)) {
+      if (!isUserRoleValid(item.path, session?.user?.role)) {
         return;
       }
     }
@@ -103,7 +98,11 @@ const Navbar = () => {
                   // @ts-ignore
                   session?.user?.firstName ? (
                     // @ts-ignore
-                    session?.user?.firstName + " " + session?.user?.lastName
+                    session?.user?.firstName +
+                    " " +
+                    session?.user?.lastName +
+                    " " +
+                    session?.user?.role
                   ) : (
                     <Loader2 className="mr-2 h-4 w-10 animate-spin" />
                   )
