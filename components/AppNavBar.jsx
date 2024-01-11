@@ -2,28 +2,31 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { SEO } from "@/utils/company";
-
-const navigation = [
-  {
-    name: "Manage users",
-    href: "/app/superAdmin/manageUsers",
-    // count: "5",
-    current: true,
-  },
-  {
-    name: "My Profile",
-    href: "/app/superAdmin/manageUsers/userProfile/clqlidfap00009ptvjfdjwujc",
-    // count: "5",
-    current: true,
-  },
-];
+import { redirect } from "next/navigation";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function AppNavBar() {
   const { data: session } = useSession();
+  // If user is not logged in, redirect to homepage
+  if (!session) redirect("/");
+
+  const navigation = [
+    {
+      name: "Manage users",
+      href: "/app/superAdmin/manageUsers",
+      // count: "5",
+      current: true,
+    },
+    {
+      name: "My Profile",
+      href: `/app/userProfile/${session?.user?.id}`,
+      // count: "5",
+      current: true,
+    },
+  ];
   return (
     <div className="flex  flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
       <Link href={"/"} className="flex h-16 shrink-0 items-center pt-2">

@@ -1,6 +1,6 @@
 import UserDetails from "@/components/UserDetails/UserDetails";
 import { getServerSession } from "next-auth";
-import { prisma } from "../../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export default async function UserProfile({ params }) {

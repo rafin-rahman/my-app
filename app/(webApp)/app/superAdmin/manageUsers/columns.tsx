@@ -12,9 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/utils/types";
-// This type is used to define the shape of our data.
+import Link from "next/link";
 
-// NOTE: rowNumber is not stored in the databse, is generated from the index value
+// NOTE: rowNumber is not stored in the database, is generated from the index value
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "rowNumber",
@@ -85,7 +85,11 @@ export const columns: ColumnDef<User>[] = [
               Copy User ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View profile</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/app/superAdmin/manageUsers/userProfile/${user.id}`}>
+                View profile
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Delete profile</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
