@@ -46,7 +46,38 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const renderMenuItem = (item: any) => {
+    // do not show if path redirect superAdmin route and user is not superAdmin
     if (!item.loginRequired || (item.loginRequired && session)) {
+      if (
+        item.path.includes("superAdmin") &&
+        // @ts-ignore
+        session?.user?.role !== "superAdmin"
+      ) {
+        return;
+      }
+      // do not show if path redirect manager route and user is not manager or superAdmin
+      if (
+        (item.path.includes("manager") &&
+          // @ts-ignore
+          session?.user?.role !== "manager") ||
+        (item.path.includes("manager") &&
+          // @ts-ignore
+          session?.user?.role !== "superAdmin")
+      ) {
+        return;
+      }
+
+      // do not show if path redirect admin route and user is not admin or superAdmin
+      if (
+        (item.path.includes("admin") &&
+          // @ts-ignore
+          session?.user?.role !== "admin") ||
+        (item.path.includes("admin") &&
+          // @ts-ignore
+          session?.user?.role !== "superAdmin")
+      ) {
+        return;
+      }
       return (
         <a href={item.path} key={item.name}>
           <Button
