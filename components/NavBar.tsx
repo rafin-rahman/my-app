@@ -45,54 +45,41 @@ const Navbar = () => {
   console.log("navbar session: ", session);
   const pathname = usePathname();
 
-  const renderMenuItem = (item: any) => {
-    // do not show if path redirect superAdmin route and user is not superAdmin
-    if (!item.loginRequired || (item.loginRequired && session)) {
-      if (
-        item.path.includes("superAdmin") &&
-        // @ts-ignore
-        session?.user?.role !== "superAdmin"
-      ) {
-        return;
-      }
-      // do not show if path redirect manager route and user is not manager or superAdmin
-      if (
-        (item.path.includes("manager") &&
-          // @ts-ignore
-          session?.user?.role !== "manager") ||
-        (item.path.includes("manager") &&
-          // @ts-ignore
-          session?.user?.role !== "superAdmin")
-      ) {
-        return;
-      }
-
-      // do not show if path redirect admin route and user is not admin or superAdmin
-      if (
-        (item.path.includes("admin") &&
-          // @ts-ignore
-          session?.user?.role !== "admin") ||
-        (item.path.includes("admin") &&
-          // @ts-ignore
-          session?.user?.role !== "superAdmin")
-      ) {
-        return;
-      }
-      return (
-        <a href={item.path} key={item.name}>
-          <Button
-            className={`${
-              pathname === item.path
-                ? "text-orange-400  underline-offset-8"
-                : ""
-            } dark text-xl dark:underline dark:underline-offset-4 hover:dark:underline-offset-8 hover:text-orange-400 `}
-            variant={"link"}
-          >
-            {item.name}
-          </Button>
-        </a>
-      );
+  const isUserRoleValid = (itemPath: string, sessionRole: string) => {
+    if (itemPath.includes("superAdmin")) {
+      return sessionRole === "superAdmin";
     }
+    if (itemPath.includes("manager")) {
+      return sessionRole === "manager" || sessionRole === "superAdmin";
+    }
+    if (itemPath.includes("admin")) {
+      return sessionRole === "admin" || sessionRole === "superAdmin";
+    }
+    return true;
+  };
+  const renderMenuItem = (item: any) => {
+    if (item.loginRequired && !session) {
+      return;
+    }
+
+    if (item.loginRequired && session) {
+      // @ts-ignore
+      if (!isUserRoleValid(item.path, session.user.role)) {
+        return;
+      }
+    }
+    return (
+      <a href={item.path} key={item.name}>
+        <Button
+          className={`${
+            pathname === item.path ? "text-orange-400  underline-offset-8" : ""
+          } dark text-xl dark:underline dark:underline-offset-4 hover:dark:underline-offset-8 hover:text-orange-400 `}
+          variant={"link"}
+        >
+          {item.name}
+        </Button>
+      </a>
+    );
   };
 
   return (
