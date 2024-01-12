@@ -41,9 +41,27 @@ const MENU_LINKS = [
 ];
 
 const Navbar = () => {
-  const { data: session } = useSession();
-  console.log("navbar session: ", session);
+  // const { data: session } = useSession();
+
   const pathname = usePathname();
+  // ensure session is loaded on page load after redirect from login page
+  const { data: session, status } = useSession();
+  console.log("navbar session: ", session);
+  console.log("navbar status: ", status);
+  if (status === "loading") {
+    return <div>loading...</div>;
+  }
+  // if (!session) {
+  //   return <div>no session</div>;
+  // }
+  if (session) {
+    console.log("session found! ");
+    console.log("navbar session: ", session);
+    console.log("navbar status: ", status);
+    console.log("navbar user: ", session.user);
+    // @ts-ignore
+    console.log("navbar role: ", session.user.role);
+  }
 
   const isUserRoleValid = (itemPath: string, sessionRole: string) => {
     if (itemPath.includes(sessionRole) || sessionRole == "superAdmin") {

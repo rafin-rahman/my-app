@@ -1,4 +1,4 @@
-export default function Aboutus() {
+export default function AppRoute() {
   return (
     <>
       {/* basic about us page with tailwindcss */}
