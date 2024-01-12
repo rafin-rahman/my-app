@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import GoogleButton from "react-google-button";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
