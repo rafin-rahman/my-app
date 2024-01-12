@@ -52,7 +52,6 @@ const Navbar = () => {
     return false;
   };
   const renderMenuItem = (item: any) => {
-    console.log(isUserRoleValid(item.path, session?.user?.role));
     if (item.loginRequired && !session) {
       return;
     }
@@ -98,11 +97,7 @@ const Navbar = () => {
                   // @ts-ignore
                   session?.user?.firstName ? (
                     // @ts-ignore
-                    session?.user?.firstName +
-                    " " +
-                    session?.user?.lastName +
-                    " " +
-                    session?.user?.role
+                    session?.user?.firstName + " " + session?.user?.lastName
                   ) : (
                     <Loader2 className="mr-2 h-4 w-10 animate-spin" />
                   )
