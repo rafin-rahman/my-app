@@ -64,7 +64,8 @@ export const authOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
-    async jwt({ token, user, trigger, session, account }) {
+    async jwt({ token, user, trigger, session, account, profile }) {
+      console.log("jwt", { token, user, trigger, session, account, profile });
       if (user) {
         return {
           ...token,
@@ -109,5 +110,5 @@ export const authOptions = {
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
   },
-  debug: process.env.NODE_ENV === "development",
+  // debug: true,
 };
