@@ -13,7 +13,6 @@ export const authOptions = {
       profile: async (profile) => {
         return {
           id: profile.sub,
-          name: profile.name,
           firstName: profile.name.split(" ")[0],
           lastName: profile.name.split(" ")[1],
           email: profile.email,
@@ -74,37 +73,35 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account.provider === "google") {
+        console.log("google signin");
         user.firstName = profile.given_name;
         user.lastName = profile.family_name;
       }
       return true;
     },
     async jwt({ token, user, trigger, session, account, profile }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-        token.firstName = user.firstName;
-        token.lastName = user.lastName;
-        token.image = user.image;
-      }
       // if (trigger === "update" && session?.firstName) {
       //   token.firstName = session.firstName;
       // }
 
+      if (user) {
+        token.id = user.id;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.role = user.role;
+        token.image = user.image;
+      }
       return token;
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          role: token.role,
-          firstName: token.firstName,
-          lastName: token.lastName,
-          image: token.image,
-        },
-      };
+      if (session?.user) {
+        session.user.id = token.id;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
+        session.user.role = token.role;
+        session.user.image = token.image;
+      }
+      return session;
     },
 
     async redirect({ url, baseUrl }) {
