@@ -46,8 +46,6 @@ const Navbar = () => {
   const pathname = usePathname();
   // ensure session is loaded on page load after redirect from login page
   const { data: session, status } = useSession();
-  console.log("session", session);
-  console.log("status", status);
 
   if (status === "loading") {
     return <div>loading...</div>;

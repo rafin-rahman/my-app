@@ -3,10 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/app/context/SessionProvider";
 import ToasterContext from "./context/ToasterContext";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { logDbConnections } from "@/utils/logDbConnections";
 import { SEO } from "@/utils/company";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,6 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
+  console.log("my session", session);
   await logDbConnections();
   return (
     <html lang="en">
