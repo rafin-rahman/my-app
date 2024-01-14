@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Provider from "./context/SessionProvider";
+import SessionProvider from "@/app/context/SessionProvider";
 import ToasterContext from "./context/ToasterContext";
 import { getServerSession } from "next-auth";
-import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
 import { logDbConnections } from "@/utils/logDbConnections";
 import { SEO } from "@/utils/company";
 
@@ -22,18 +20,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
-  // detect current route
-
-  logDbConnections();
+  await logDbConnections();
   return (
     <html lang="en">
-      <Provider session={session}>
+      <SessionProvider session={session}>
         <body className={inter.className}>
           <ToasterContext />
-
           {children}
         </body>
-      </Provider>
+      </SessionProvider>
     </html>
   );
 }

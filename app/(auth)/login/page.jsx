@@ -77,6 +77,7 @@ export default function Login() {
       setLoading(false);
     } else {
       toast.success("Logged in successfully");
+
       if (callbackUrl !== "/") {
         // keep only the pathname from callbackUrl e.g. /protected instead of http://localhost:3000/protected
         const callbackUrlPathName = new URL(callbackUrl).pathname;
