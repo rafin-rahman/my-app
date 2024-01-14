@@ -23,12 +23,10 @@ export default async function RootLayout({
   await logDbConnections();
   return (
     <html lang="en">
-      <SessionProvider session={session}>
-        <body className={inter.className}>
-          <ToasterContext />
-          {children}
-        </body>
-      </SessionProvider>
+      <body className={inter.className}>
+        <ToasterContext />
+        <SessionProvider session={session}>{children}</SessionProvider>
+      </body>
     </html>
   );
 }

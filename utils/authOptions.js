@@ -85,7 +85,7 @@ export const authOptions = {
         ...session,
         user: {
           ...session.user,
-          id: token.id,
+          id: token.id || user.id,
           role: token.role,
           firstName: token.firstName,
           lastName: token.lastName,
