@@ -64,24 +64,39 @@ export const authOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      if (account.provider === "google") {
+        user.firstName = profile.given_name;
+        user.lastName = profile.family_name;
+      }
+      return true;
+    },
     async jwt({ token, user, trigger, session, account, profile }) {
-      console.log("jwt", { token, user, trigger, session, account, profile });
+      // console.log("my log token", token);
+      // console.log("my log user", user);
+      // console.log("my log trigger", trigger);
+      // console.log("my log session", session);
+      // console.log("my log account", account);
+      // console.log("my log profile", profile);
       if (user) {
         return {
           ...token,
           id: user.id,
           role: user.role,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: profile.given_name,
+          lastName: profile.family_name,
           image: user.image,
         };
       }
-      if (trigger === "update" && session?.firstName) {
-        token.firstName = session.firstName;
-      }
+      // if (trigger === "update" && session?.firstName) {
+      //   token.firstName = session.firstName;
+      // }
       return token;
     },
     async session({ session, token, user }) {
+      console.log("my log session", session);
+      console.log("my log token", token);
+      console.log("my log user", user);
       return {
         ...session,
         user: {
@@ -90,6 +105,7 @@ export const authOptions = {
           role: token.role,
           firstName: token.firstName,
           lastName: token.lastName,
+          abc: "ss",
           image: token.image,
         },
       };
