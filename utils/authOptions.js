@@ -36,6 +36,7 @@ export const authOptions = {
         },
       },
       async authorize(credentials) {
+        console.log("my credentials", credentials);
         if (!credentials.email || !credentials.password) {
           throw new Error("Missing credentials");
         }
@@ -58,7 +59,14 @@ export const authOptions = {
         if (!passwordMatch) {
           throw new Error("Invalid credentials");
         }
-        return user;
+        return {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          image: user.image,
+          role: user.role,
+        };
       },
     }),
   ],
@@ -72,40 +80,32 @@ export const authOptions = {
       return true;
     },
     async jwt({ token, user, trigger, session, account, profile }) {
-      // console.log("my log token", token);
-      // console.log("my log user", user);
-      // console.log("my log trigger", trigger);
-      // console.log("my log session", session);
-      // console.log("my log account", account);
-      // console.log("my log profile", profile);
+      console.log("trigger", trigger);
       if (user) {
         return {
           ...token,
           id: user.id,
           role: user.role,
-          firstName: profile.given_name,
-          lastName: profile.family_name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           image: user.image,
         };
       }
       // if (trigger === "update" && session?.firstName) {
       //   token.firstName = session.firstName;
       // }
+
       return token;
     },
-    async session({ session, token, user }) {
-      console.log("my log session", session);
-      console.log("my log token", token);
-      console.log("my log user", user);
+    async session({ session, token }) {
       return {
         ...session,
         user: {
           ...session.user,
-          id: token.id || user.id,
+          id: token.id,
           role: token.role,
           firstName: token.firstName,
           lastName: token.lastName,
-          abc: "ss",
           image: token.image,
         },
       };
@@ -126,5 +126,5 @@ export const authOptions = {
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
   },
-  // debug: true,
+  debug: true,
 };
