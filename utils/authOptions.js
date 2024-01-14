@@ -81,28 +81,17 @@ export const authOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      // return {
-      //   ...session,
-      //   user: {
-      //     ...session.user,
-      //     id: token.id,
-      //     role: token.role,
-      //     firstName: token.firstName,
-      //     lastName: token.lastName,
-      //     image: token.image,
-      //   },
-      // };
-
-      if (token) {
-        session.user = {
-          id: token.sub,
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          role: token.role,
           firstName: token.firstName,
           lastName: token.lastName,
-          email: token.email,
-          image: token.picture,
-        };
-      }
-      return session;
+          image: token.image,
+        },
+      };
     },
 
     async redirect({ url, baseUrl }) {
