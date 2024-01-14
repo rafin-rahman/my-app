@@ -65,11 +65,6 @@ export const authOptions = {
   adapter: PrismaAdapter(prisma),
   callbacks: {
     async jwt({ token, user, trigger, session, account }) {
-      console.log("JWTToken", token);
-      console.log("JWTUser", user);
-      console.log("JWTTrigger", trigger);
-      console.log("JWTSession", session);
-      console.log("JWTAccount", account);
       if (user) {
         return {
           ...token,
@@ -86,21 +81,28 @@ export const authOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      console.log("SessionSession", session);
-      console.log("SessionToken", token);
-      console.log("SessionUser", user);
+      // return {
+      //   ...session,
+      //   user: {
+      //     ...session.user,
+      //     id: token.id,
+      //     role: token.role,
+      //     firstName: token.firstName,
+      //     lastName: token.lastName,
+      //     image: token.image,
+      //   },
+      // };
 
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          role: token.role,
+      if (token) {
+        session.user = {
+          id: token.sub,
           firstName: token.firstName,
           lastName: token.lastName,
-          image: token.image,
-        },
-      };
+          email: token.email,
+          image: token.picture,
+        };
+      }
+      return session;
     },
 
     async redirect({ url, baseUrl }) {
