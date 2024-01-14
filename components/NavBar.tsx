@@ -113,7 +113,7 @@ const Navbar = () => {
               <Button variant="outline">
                 {
                   // @ts-ignore
-                  session?.user?.firstName ? (
+                  session?.user?.email ? (
                     // @ts-ignore
                     session?.user?.firstName + " " + session?.user?.lastName
                   ) : (

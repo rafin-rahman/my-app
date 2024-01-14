@@ -64,12 +64,12 @@ export const authOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
-      // console.log("JWTToken", token);
-      // console.log("JWTUser", user);
-      // console.log("JWTTrigger", trigger);
-      // console.log("JWTSession", session);
-      // pass user ID and user role into token
+    async jwt({ token, user, trigger, session, account }) {
+      console.log("JWTToken", token);
+      console.log("JWTUser", user);
+      console.log("JWTTrigger", trigger);
+      console.log("JWTSession", session);
+      console.log("JWTAccount", account);
       if (user) {
         return {
           ...token,
@@ -86,9 +86,9 @@ export const authOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      // console.log("SessionSession", session);
-      // console.log("SessionToken", token);
-      // console.log("SessionUser", user);
+      console.log("SessionSession", session);
+      console.log("SessionToken", token);
+      console.log("SessionUser", user);
 
       return {
         ...session,
