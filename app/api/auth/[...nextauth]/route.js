@@ -10,7 +10,7 @@ const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      profile: async (profile) => {
+      profile(profile) {
         return {
           id: profile.sub,
           firstName: profile.name.split(" ")[0],
