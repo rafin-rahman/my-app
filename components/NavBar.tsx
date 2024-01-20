@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/utils/company";
+import getSessionFunction from "@/utils/getSessionFunction";
 
 import {
   Popover,
@@ -11,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 const MENU_LINKS = [
   {
@@ -41,12 +43,10 @@ const MENU_LINKS = [
 ];
 
 const Navbar = () => {
-  // const { data: session } = useSession();
-
   const pathname = usePathname();
   // ensure session is loaded on page load after redirect from login page
   const { data: session, status } = useSession();
-
+  const newSession = getSessionFunction();
   if (status === "loading") {
     return <div>loading...</div>;
   }
@@ -104,9 +104,9 @@ const Navbar = () => {
               <Button variant="outline">
                 {
                   // @ts-ignore
-                  session?.user?.email ? (
+                  newSession?.user?.email ? (
                     // @ts-ignore
-                    session?.user?.firstName +
+                    newSession?.user?.firstName +
                     " " +
                     // @ts-ignore
                     session?.user?.lastName +
