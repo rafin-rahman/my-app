@@ -69,6 +69,7 @@ const authOptions = {
       },
     }),
   ],
+  database: process.env.DATABASE_URL,
   adapter: PrismaAdapter(prisma),
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
