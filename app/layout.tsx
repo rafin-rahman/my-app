@@ -19,7 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
-  console.log("my session", session);
+
   await logDbConnections();
   return (
     <html lang="en">
