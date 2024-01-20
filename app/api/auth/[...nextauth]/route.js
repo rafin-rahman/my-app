@@ -101,7 +101,7 @@ const authOptions = {
         session.user.role = token.role;
         session.user.image = token.image;
       }
-      return session;
+      return Promise.resolve(session);
     },
 
     async redirect({ url, baseUrl }) {
