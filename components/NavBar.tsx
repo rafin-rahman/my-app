@@ -110,7 +110,10 @@ const Navbar = () => {
                     session?.user?.lastName +
                     " " +
                     // @ts-ignore
-                    session?.user?.email
+                    session?.user?.email +
+                    " " +
+                    // @ts-ignore
+                    session?.user?.role
                   ) : (
                     <Loader2 className="mr-2 h-4 w-10 animate-spin" />
                   )

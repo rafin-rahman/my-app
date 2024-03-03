@@ -74,9 +74,11 @@ const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account.provider === "google") {
-        console.log("google signin");
+        console.log("google sign in");
         user.firstName = profile.given_name;
         user.lastName = profile.family_name;
+      } else {
+        console.log("it's not a google sign in");
       }
       return true;
     },

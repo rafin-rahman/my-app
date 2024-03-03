@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 
 export default function About() {
-  const { data: session, status } = useSession();
+  const { data: senzyssion, status } = useSession();
 
   return (
     <>
