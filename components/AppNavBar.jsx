@@ -11,7 +11,7 @@ function classNames(...classes) {
 export default function AppNavBar() {
   const { data: session } = useSession();
   // If user is not logged in, redirect to homepage
-  if (!session) redirect("/");
+  // if (!session) redirect("/");
 
   const navigation = [
     {

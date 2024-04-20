@@ -29,7 +29,7 @@
 
 import { getToken } from "next-auth/jwt";
 import { withAuth } from "next-auth/middleware";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 // Ignore requests that aren't for the app or API.
 
@@ -43,6 +43,7 @@ export default async function middleware(req, event) {
   // }
 
   const token = await getToken({ req });
+
   // allow only superAdmin or admin to access /app/admin
   if (
     req.nextUrl.pathname.includes("/app/admin") &&
@@ -69,14 +70,14 @@ export default async function middleware(req, event) {
 
   return NextResponse.next();
 
-  const authMiddleware = await withAuth({
-    pages: {
-      signIn: `/login`,
-    },
-  });
+  // const authMiddleware = await withAuth({
+  //   pages: {
+  //     signIn: `/login`,
+  //   },
+  // });
 
   // @ts-expect-error
-  return authMiddleware(req, event);
+  // return authMiddleware(req, event);
 }
 
 export const config = { matcher: ["/app/:path*"] };
