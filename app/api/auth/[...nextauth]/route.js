@@ -122,7 +122,7 @@ const authOptions = {
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
   },
-  // debug: true,
+  debug: true,
 };
 
 const handler = NextAuth(authOptions);
