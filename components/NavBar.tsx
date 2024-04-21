@@ -43,7 +43,7 @@ const MENU_LINKS = [
 const Navbar = () => {
   const pathname = usePathname();
   // ensure session is loaded on page load after redirect from login page
-  const { data: session, status } = useSession({ required: true });
+  const { data: session, status } = useSession();
 
   if (status === "loading") {
     return <div>loading...</div>;
