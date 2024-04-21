@@ -43,14 +43,15 @@ const MENU_LINKS = [
 const Navbar = () => {
   const pathname = usePathname();
   // ensure session is loaded on page load after redirect from login page
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession({ required: true });
 
   if (status === "loading") {
     return <div>loading...</div>;
   }
-  // if (!session) {
-  //   return <div>no session</div>;
-  // }
+  if (!session) {
+    console.log("No session found ", session);
+    console.log("session status: ", status);
+  }
 
   const isUserRoleValid = (itemPath: string, sessionRole: string) => {
     if (itemPath.includes(sessionRole) || sessionRole == "superAdmin") {
